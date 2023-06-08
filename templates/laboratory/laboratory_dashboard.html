@@ -1,0 +1,7 @@
+{% extends 'laboratory/base.html' %}
+{% block content %}
+<h1> laboratory dashboard {{ current_user.name }}</h1>
+{% for laboratory in laboratory %}
+<h1>{{ laboratory.name }}</h1>
+{% endfor %}
+{% endblock %}

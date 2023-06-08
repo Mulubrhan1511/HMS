@@ -1,0 +1,51 @@
+{% extends 'reception/base.html' %}
+
+{% block content %}
+  <h1 class="text-center" style="color: blue; background-color: white;">Reception</h1>
+
+  <div style="position: relative;">
+    <input class="form-control" type="text" id="search-input" placeholder="Search..." style="width: 500px; display: inline-block;">
+    <button class="telegram-circle-button" id="search-button" style="background-color: #007bff; color: #ffffff; border: none; border-radius: 50%; padding: 10px; font-size: 16px; cursor: pointer;">
+      <i class="fa fa-arrow-right" style="font-size: 20px;"></i>
+    </button>
+    
+    <div id="search-results" style="position: absolute; top: 100%;"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#search-input').on('input', function() {
+        var query = $(this).val();
+        if (query.length >= 3) {
+          $.ajax({
+            url: '/search', // Replace with the URL of your Flask endpoint
+            method: 'POST',
+            data: {query: query},
+            dataType: 'json',
+            success: function(response) {
+              var results = '';
+              $.each(response, function(index, item) {
+                results += '<div class="search-result" style="background-color: rgb(244, 245, 244); color: blue; width: 500px;">'+ item.first_name + ' ' + item.email + ' ' + item.phone +'</div>';
+              });
+              $('#search-results').html(results);
+            }
+          });
+        } else {
+          $('#search-results').html('');
+        }
+      });
+
+      $('#search-results').on('click', '.search-result', function() {
+        var query = $(this).text();
+        $('#search-input').val(query);
+        $('#search-results').html('');
+      });
+
+      $('#search-button').on('click', function() {
+        var query = $('#search-input').val();
+        window.location.href = 'patient_detail_reception/' + query;
+      });
+    });
+  </script>
+{% endblock %}

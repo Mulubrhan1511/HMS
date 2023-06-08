@@ -1,0 +1,16 @@
+{% extends 'doctor/base.html' %}
+
+{% block content %}
+{% for patient in patient %}
+
+  <h1 class="display-1 fw-bold text-primary text-center py-5">Detail of  {{ patient.first_name }} </h1>
+  {% endfor %}
+<ul>
+    
+    {% for patient in patient %}
+    <li>{{ patient.id}}</li>
+      <li>{{ patient.first_name }}</li>
+      
+    {% endfor %}
+  </ul>
+{% endblock %}

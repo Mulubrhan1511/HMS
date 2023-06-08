@@ -1,0 +1,10 @@
+{% extends 'reception/base.html' %}
+
+{% block content %}
+
+{% for patient in patient %}
+
+  
+  <h1 style="background-color: rgb(244, 245, 244); color: blue;">Detail of  {{ patient.first_name }}</h1>
+  {% endfor %}
+{% endblock %}

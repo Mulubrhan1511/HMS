@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-giQX3NB4QJt2pzYYvF3iRv+0Lq7IqfHg6rPjyw5rY9+Kx7z1VWf5x4xS/hQDQoYGJfCOW3+c+A0W8fQO6gRt0A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-Gh2eJyXwv6/vOQoMjQ6qKd4QW06JH5yjKd+kLxJLLF4GgM7Y2JZtBxXt3k0dO4QX2hKjgZlP5M5y6h+Zs2mZ6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        
+
+      </nav>
+    </header>
+    <main>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flashes">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      &copy; 2023 Hospital Management System
+    </footer>
+  </body>
+</html>

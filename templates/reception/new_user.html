@@ -1,0 +1,64 @@
+{% extends 'reception/base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">Reception  {{ name.name }}</h1>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      
+      <form method="POST">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="first_name" name="first_name" required>
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Father Name</label>
+          <input type="text" class="form-control" id="second_name" name="second_name" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input class="form-control" type="email" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone</label>
+          <input class="form-control" type="tel" id="phone" name="phone" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="password">Password</label>
+          <input class="form-control" type="password" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="confirm_password">Confirm Password</label>
+          <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+        <div class="mb-3">
+          <label for="type" class="form-label">User Type</label>
+          <select id="type" name="type" required>
+            <option value="patient">Patient</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="doctor" class="form-label">Available Doctor</label>
+          <select id="doctor" name="doctor" required>
+            {% for doctor in doctors %}
+            <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div id="doctor-fields" style="display: none;">
+          <label for="specialty" class="form-label">Specialty</label>
+          <input type="text" id="specialty" name="specialty" class="form-control">
+          <label for="doctor-phone" class="form-label">Doctor Phone</label>
+          <input type="tel" id="doctor-phone" name="doctor-phone" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary" style="position: relative; z-index: 1;">Sign Up</button>
+      </form>
+    </div>
+  </div>
+</div>
+  
+{% endblock %}
