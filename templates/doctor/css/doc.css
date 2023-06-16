@@ -1,14 +1,11 @@
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: white;
-    height: 60px;
-    border-top: 1px solid #CCCCCC;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container {
+  max-width: 1000px !important;
+  max-height: 200000px !important;
+  margin: 30px auto;
+  margin-bottom: 50px !important;
+  padding-bottom: 20px !important;
 }
+
 #neubar {
     background: #fae8d2;
     box-shadow: 4px 6px 12px rgba(0,0,0,0.4)

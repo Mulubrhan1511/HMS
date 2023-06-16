@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import app, db, Patient, Doctor, Appointment, Reception, Laboratory
+from models import app, db, Patient, Doctor, Appointment, Reception, Laboratory, Report
 from flask_login import login_user, login_required, logout_user, current_user, LoginManager
 
 
@@ -188,12 +188,13 @@ def laboratory_dashboard():
     laboratory = Laboratory.query.filter().all()
     return render_template('laboratory/laboratory_dashboard.html', laboratory=laboratory, name=name)
 
-@app.route('/patient/<int:patient_id>')
+@app.route('/patient/<int:patient_id>', methods=['GET', 'POST'])
 def patient_detail(patient_id):
     # Use the patient ID to look up the patient's details
     patient = Patient.query.filter(Patient.id == patient_id).all()
     # Render a template with the patient's details
-    return render_template('doctor/patient_detail.html', patient=patient)
+    reports = Report.query.filter(Report.patient_id == patient_id).order_by(Report.date.desc()).all()
+    return render_template('doctor/patient_detail.html', patient=patient, report=reports)
 reception_bp = Blueprint('reception', __name__)
 @reception_bp.route('/patient/<int:patient_id>')
 def show_patient_detail(patient_id):
@@ -233,6 +234,24 @@ def search():
         for patient in patients:
             results.append({'first_name': patient.first_name, 'second_name': patient.second_name,'email': patient.email, 'phone': patient.phone, 'id':patient.id})
     return jsonify(results)  
+
+@app.route('/submit_report/<int:patient_id>', methods=['POST'])
+def submit_report(patient_id):
+    report_text = request.form['report']
+    patient = Patient.query.get(patient_id)
+    p_report = Report(data=report_text, patient_id=patient.id)
+    db.session.add(p_report)
+    db.session.commit()
+    return redirect(url_for('patient_detail', patient_id=patient.id))
+
+@app.route('/edit_report', methods=['POST'])
+def edit_report():
+    report_id = request.form['report_id']
+    report_data = request.form['report_data']
+    report = Report.query.get(report_id)
+    report.data = report_data
+    db.session.commit()
+    return jsonify(success=True)
 
 
 

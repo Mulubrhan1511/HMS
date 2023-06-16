@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from flask_login import UserMixin
 
 
@@ -48,3 +49,9 @@ class Reception(UserMixin, db.Model):
     specialty = db.Column(db.String(50))
     phone = db.Column(db.String(20))
     password = db.Column(db.String(128))
+
+class Report(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.String(10000))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))

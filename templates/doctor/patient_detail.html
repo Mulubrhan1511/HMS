@@ -4,13 +4,73 @@
 {% for patient in patient %}
 
   <h1 class="display-1 fw-bold text-primary text-center py-5">Detail of  {{ patient.first_name }} </h1>
-  {% endfor %}
-<ul>
-    
-    {% for patient in patient %}
-    <li>{{ patient.id}}</li>
-      <li>{{ patient.first_name }}</li>
-      
+  
+  <form method="POST" action="{{ url_for('submit_report', patient_id=patient.id) }}">
+    <div class="form-group">
+      <textarea class="form-control" id="report" name="report"></textarea>
+    </div>
+    <div class="form-group">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+  </form>
+  
+  {% if report %}
+  <ul class="list-group">
+    {% for report in report %}
+      <li class="list-group-item list-group-item-action list-group-item-primary">{{ report.date }}
+        <button type="button" class="btn btn-primary btn-sm ms-2" data-report-id="{{ report.id }}">Edit</button>
+      </li>
+      <li class="list-group-item">
+        <div class="report-data" data-report-id="{{ report.id }}">{{ report.data }}</div>
+        <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
+          <textarea class="form-control" name="report_data">{{ report.data }}</textarea>
+          <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+          <input type="hidden" name="report_id" value="{{ report.id }}">
+        </form>
+      </li>
     {% endfor %}
   </ul>
+  {% else %}
+  <p>No reports found.</p>
+  {% endif %}
+  
+{% endfor %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('.btn-primary').click(function() {
+    var reportId = $(this).data('report-id');
+    var reportData = $('.report-data[data-report-id="' + reportId + '"]');
+    var editForm = $('.edit-report-form[data-report-id="' + reportId + '"]');
+
+    reportData.toggleClass('d-none');
+    editForm.toggleClass('d-none');
+    $(this).text(function(i, text) {
+      return text === 'Edit' ? 'Cancel' : 'Edit';
+    });
+  });
+
+  $('.edit-report-form').submit(function(event) {
+    event.preventDefault();
+    var form = $(this);
+    var data = form.serialize();
+    $.ajax({
+      url: '/edit_report',
+      type: 'POST',
+      data: data,
+      success: function(response) {
+        var reportId = form.data('report-id');
+        var reportData = $('.report-data[data-report-id="' + reportId + '"]');
+        var editForm = $('.edit-report-form[data-report-id="' + reportId + '"]');
+
+        reportData.text(response['report_data']);
+        reportData.toggleClass('d-none');
+        editForm.toggleClass('d-none');
+        $('.btn-primary[data-report-id="' + reportId + '"]').text('Edit');
+      }
+    });
+  });
+});
+</script>
 {% endblock %}

@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
   <body>
+    <div class="container">
     <header>
         <nav class="navbar navbar-expand-sm navbar-light" id="neubar">
             <div class="container">
@@ -49,8 +50,9 @@
       {% endwith %}
       {% block content %}{% endblock %}
         </div>
-    <footer class="footer" style="position: fixed; bottom: 0; left: 0; width: 100%; padding: 10px; background-color: #f1f1f1; text-align: center; font-size: 14px;">
-      &copy; 2023 Hospital Management System
-    </footer>
-  </body>
+      </div>
+        </body>
+        <footer class="footer" style="position: fixed; bottom: 0; left: 0; width: 100%; padding: 10px; background-color: #f1f1f1; text-align: center; font-size: 14px;">
+          &copy; 2023 Hospital Management System
+        </footer>
 </html>
