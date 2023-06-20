@@ -10,33 +10,33 @@
   <body>
     <div class="container">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light" id="neubar">
-            <div class="container">
-              <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto ">
-                  <li class="nav-item">
-                    <a class="nav-link mx-2 active" aria-current="page" href="{{ url_for('doctor_dashboard') }}">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Products</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link mx-2" href="{{ url_for('logout') }}">Logout</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Company
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <li><a class="dropdown-item" href="#">Blog</a></li>
-                      <li><a class="dropdown-item" href="#">About Us</a></li>
-                      <li><a class="dropdown-item" href="#">Contact us</a></li>
-                    </ul>
-                  </li>
+      <nav class="navbar navbar-expand-lg navbar-light" id="neubar">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link mx-2 active" aria-current="page" href="{{ url_for('doctor_dashboard') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="#">Appoitement</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Company
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Blog</a></li>
+                            <li><a class="dropdown-item" href="#">About Us</a></li>
+                            <li><a class="dropdown-item" href="#">Contact us</a></li>
+                        </ul>
+                    </li>
                 </ul>
-              </div>
             </div>
-          </nav>
+        </div>
+    </nav>
     </header>
     <div class="container">
       {% with messages = get_flashed_messages() %}

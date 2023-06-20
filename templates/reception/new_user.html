@@ -28,6 +28,39 @@
           <input class="form-control" type="tel" id="phone" name="phone" required>
         </div>
         <div class="mb-3">
+          <label for="name" class="form-label">City</label>
+          <input type="text" class="form-control" id="city" name="city" required>
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">State</label>
+          <input type="text" class="form-control" id="state" name="state" required>
+        </div>
+        <div class="mb-3">
+          <label for="type" class="form-label">Gender</label>
+          <select id="gender" name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="date_of_birth" class="form-label">Date of Birth</label>
+          <div class="input-group">
+            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" data-target="#datepicker" required />
+            <button class="btn btn-outline-secondary" type="button" id="datepicker" data-bs-toggle="datepicker"><i class="bi bi-calendar"></i></button>
+          </div>
+        </div>
+        
+        <script>
+          var datepickerTrigger = document.querySelectorAll('[data-bs-toggle="datepicker"]');
+          for (var i = 0; i < datepickerTrigger.length; ++i) {
+            var datepicker = new bootstrap.Datepicker(datepickerTrigger[i], {
+              autoClose: true,
+              toggleActive: true,
+              format: 'yyyy-mm-dd',
+            });
+          }
+        </script>
+        <div class="mb-3">
           <label class="form-label" for="password">Password</label>
           <input class="form-control" type="password" id="password" name="password" required>
         </div>

@@ -17,6 +17,10 @@ class Patient(UserMixin, db.Model):
     email = db.Column(db.String(50))
     phone = db.Column(db.String(20))
     password = db.Column(db.String(128))
+    date_of_birth = db.Column(db.Date)
+    gender = db.Column(db.String(10))
+    city = db.Column(db.String(50))
+    state = db.Column(db.String(50))
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
 
 class Doctor(UserMixin, db.Model):

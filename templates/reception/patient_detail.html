@@ -5,6 +5,6 @@
 {% for patient in patient %}
 
   
-  <h1 style="background-color: rgb(244, 245, 244); color: blue;">Detail of  {{ patient.first_name }}</h1>
+  <h1 style="background-color: rgb(244, 245, 244); color: blue;">Detail of  {{ patient.first_name }} {{patient.email}} {{patient.gender}}</h1>
   {% endfor %}
 {% endblock %}

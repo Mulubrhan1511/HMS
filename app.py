@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import app, db, Patient, Doctor, Appointment, Reception, Laboratory, Report
 from flask_login import login_user, login_required, logout_user, current_user, LoginManager
+from datetime import date
 
 
 login_manager = LoginManager(app)
@@ -54,7 +55,12 @@ def signup():
         # Create a new user in the database
         user_type = request.form['type']
         if user_type == 'patient':
-            new_user = Patient(name=name, email=email, password=hashed_password)
+            date_of_birth= '13/12/1996'
+            gender = request.form['gender']
+            city = request.form['city']
+            state = request.form['state']
+            flash('what about' + date_of_birth)
+            new_user = Patient(name=name, email=email, password=hashed_password, state=state, city=city, date_of_birth=date_of_birth, gender=gender)
         elif user_type == 'doctor':
             specialty = request.form['specialty']
             phone = '0919151121'
@@ -160,7 +166,11 @@ def new_user():
             return redirect(url_for('new_user'))
         # Hash the password
         hashed_password = generate_password_hash(password, method='sha256')
-        new_user = Patient(first_name=first_name, second_name=second_name,email=email, password=hashed_password, doctor_id=doctor_id, phone=phone)
+        date_of_birth= request.form['date_of_birth']
+        gender = request.form['gender']
+        city = request.form['city']
+        state = request.form['state']
+        new_user = Patient(second_name=second_name,first_name=first_name, email=email, password=hashed_password, state=state, city=city, date_of_birth=date_of_birth, gender=gender, doctor_id=doctor_id)
         db.session.add(new_user)
         db.session.commit()
 
@@ -191,10 +201,16 @@ def laboratory_dashboard():
 @app.route('/patient/<int:patient_id>', methods=['GET', 'POST'])
 def patient_detail(patient_id):
     # Use the patient ID to look up the patient's details
+    patients = Patient.query.filter(Patient.id == patient_id).first()
     patient = Patient.query.filter(Patient.id == patient_id).all()
-    # Render a template with the patient's details
     reports = Report.query.filter(Report.patient_id == patient_id).order_by(Report.date.desc()).all()
-    return render_template('doctor/patient_detail.html', patient=patient, report=reports)
+    # calculate the age of the patient
+    dob = patients.date_of_birth
+    today = date.today()
+    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+    print("The age of the patient is:", age)
+    return render_template('doctor/patient_detail.html', patient=patient, report=reports, age=age)
 reception_bp = Blueprint('reception', __name__)
 @reception_bp.route('/patient/<int:patient_id>')
 def show_patient_detail(patient_id):
