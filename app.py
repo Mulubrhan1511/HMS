@@ -208,7 +208,7 @@ def patient_detail(patient_id):
     dob = patients.date_of_birth
     today = date.today()
     age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-
+    
     print("The age of the patient is:", age)
     return render_template('doctor/patient_detail.html', patient=patient, report=reports, age=age)
 reception_bp = Blueprint('reception', __name__)
