@@ -5,7 +5,10 @@
   margin-bottom: 50px !important;
   padding-bottom: 20px !important;
 }
-
+body {
+  margin: 0;
+  background-color: #a0d4ec;
+}
 #neubar {
     background: #fae8d2;
     box-shadow: 4px 6px 12px rgba(0,0,0,0.4)

@@ -4,10 +4,10 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-giQX3NB4QJt2pzYYvF3iRv+0Lq7IqfHg6rPjyw5rY9+Kx7z1VWf5x4xS/hQDQoYGJfCOW3+c+A0W8fQO6gRt0A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-Gh2eJyXwv6/vOQoMjQ6qKd4QW06JH5yjKd+kLxJLLF4GgM7Y2JZtBxXt3k0dO4QX2hKjgZlP5M5y6h+Zs2mZ6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <linklink rel="stylesheet" href="doctor/css/doc.css"></linklink>
+   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
-  <body>
+  <body class="container" style="background-color: #a0d4ec; margin-left: 0; padding-left: 0;">
     <div class="container">
     <header>
       <nav class="navbar navbar-expand-lg navbar-light" id="neubar">
@@ -49,10 +49,17 @@
         {% endif %}
       {% endwith %}
       {% block content %}{% endblock %}
+      <footer class="footer" style="position: fixed;
+      bottom: 0;
+      width: 100%;
+     text-align: center; 
+     font-size: 14px;">
+        &copy; 2023 Hospital Management System
+      </footer>
         </div>
+
       </div>
+  
         </body>
-        <footer class="footer" style="position: fixed; bottom: 0; left: 0; width: 100%; padding: 10px; background-color: #f1f1f1; text-align: center; font-size: 14px;">
-          &copy; 2023 Hospital Management System
-        </footer>
+
 </html>

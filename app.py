@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request, Blueprint
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request, Blueprint, get_flashed_messages,g
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import app, db, Patient, Doctor, Appointment, Reception, Laboratory, Report
+from models import app, db, Patient, Doctor, Appointment, Reception, Laboratory, Report, Laboratory_test, Laboratory_type
 from flask_login import login_user, login_required, logout_user, current_user, LoginManager
 from datetime import date
 
@@ -194,9 +194,9 @@ def reception_dashboard():
 @app.route('/laboratory_dashboard', methods=['GET', 'POST'])
 @login_required
 def laboratory_dashboard():
-    name = current_user if current_user.is_authenticated else ''
-    laboratory = Laboratory.query.filter().all()
-    return render_template('laboratory/laboratory_dashboard.html', laboratory=laboratory, name=name)
+    name = current_user.email if current_user.is_authenticated else ''
+    laboratory_test =Laboratory_test.query.filter(Laboratory_test.paid==1, Laboratory_test.test==0).all()
+    return render_template('laboratory/laboratory_dashboard.html', name=name, laboratory_test=laboratory_test)
 
 @app.route('/patient/<int:patient_id>', methods=['GET', 'POST'])
 def patient_detail(patient_id):
@@ -211,6 +211,42 @@ def patient_detail(patient_id):
     
     print("The age of the patient is:", age)
     return render_template('doctor/patient_detail.html', patient=patient, report=reports, age=age)
+@app.route('/laboratory_detail_doctor/<int:patient_id>', methods=['GET', 'POST'])
+def laboratory_detail_doctor(patient_id):
+    if request.method == 'POST':
+        me = request.form.getlist('hello')
+        price = 0
+        for i in me:
+            lab = Laboratory_type.query.filter(Laboratory_type.name == i).first()
+            price = price + lab.price
+        patients = Patient.query.filter(Patient.id == patient_id).first()
+        dob = patients.date_of_birth
+        today = date.today()
+        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+        lab_report = "Lab Report for Patient ID : {} Patient Name :{} Patient Gender : {} Patient Age : {} \n\nSelected Lab Types:\n".format(patient_id,patients.first_name,patients.gender, age)
+        for lab_type in me:
+            lab_report += "- {}\n\n\n".format(lab_type)
+        test = 0
+        paid = 0
+        p_report = Laboratory_test(data=lab_report, patient_id=patient_id, test=test, paid=paid, price=price)
+        db.session.add(p_report)
+        db.session.commit()
+        return redirect(url_for('laboratory_detail_doctor', patient_id=patient_id))
+    # Use the patient ID to look up the patient's details
+    patients = Patient.query.filter(Patient.id == patient_id).first()
+    patient = Patient.query.filter(Patient.id == patient_id).first()
+    reports = Laboratory_test.query.filter(Laboratory_test.patient_id==patient_id).order_by(Laboratory_test.date.desc()).all()
+    # calculate the age of the patient
+    dob = patients.date_of_birth
+    today = date.today()
+    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+    laboratory_type = Laboratory_type.query.all()
+    #print("The age of the patient is:", age)
+    return render_template('doctor/laboratory_detail_doctor.html', patient=patient, report=reports, age=age, laboratory_type=laboratory_type)
+@app.route('/laboratory_detail_lab/<int:laboratory_test_id>', methods=['GET', 'POST'])
+def laboratory_detail_lab(laboratory_test_id):
+    laboratory_test = Laboratory_test.query.filter(Laboratory_test.id == laboratory_test_id).first()
+    return render_template('laboratory/laboratory_detail_lab.html', laboratory_test=laboratory_test)
 reception_bp = Blueprint('reception', __name__)
 @reception_bp.route('/patient/<int:patient_id>')
 def show_patient_detail(patient_id):
@@ -259,7 +295,38 @@ def submit_report(patient_id):
     db.session.add(p_report)
     db.session.commit()
     return redirect(url_for('patient_detail', patient_id=patient.id))
-
+@app.route('/add_laboratory', methods=['GET', 'POST'])
+def add_laboratory():
+    if request.method == 'POST':
+        name = request.form['name']
+        price = request.form['price']
+        new_lab = Laboratory_type(name=name, price=price)
+        db.session.add(new_lab)
+        db.session.commit()
+        return redirect(url_for('add_laboratory'))
+    return render_template('laboratory/add_laboratory.html')
+    
+@app.route('/submit_lab_report/<int:laboratory_test_id>', methods=['POST'])
+def submit_lab_report(laboratory_test_id):
+    report_data = request.form['report_data']
+    laboratory_test = Laboratory_test.query.filter(Laboratory_test.id == laboratory_test_id).first()
+    laboratory_test.data= report_data
+    laboratory_test.test=1
+    db.session.commit()
+    return redirect(url_for('laboratory_dashboard'))
+@app.route('/lab_payment', methods=['GET', 'POST'])
+def lab_payment():
+    laboratory_test = Laboratory_test.query.filter(Laboratory_test.paid==0).all()
+    return render_template('reception/payment.html', laboratory_test=laboratory_test)
+@app.route('/payment_for_lab/<int:laboratory_test_id>', methods=['GET', 'POST'])
+def payment_for_lab(laboratory_test_id):
+    if request.method == 'POST':
+        laboratory_test = Laboratory_test.query.filter(Laboratory_test.id == laboratory_test_id).first()
+        laboratory_test.paid= 1
+        db.session.commit()
+        return redirect(url_for('lab_payment'))
+    laboratory_test = Laboratory_test.query.filter(Laboratory_test.id==laboratory_test_id).first()
+    return render_template('reception/detail_payment.html', laboratory_test=laboratory_test)
 @app.route('/edit_report', methods=['POST'])
 def edit_report():
     report_id = request.form['report_id']
@@ -268,7 +335,9 @@ def edit_report():
     report.data = report_data
     db.session.commit()
     return jsonify(success=True)
-
+@app.before_request
+def before_request():
+    g.messages = get_flashed_messages()
 
 
 if __name__ == '__main__':

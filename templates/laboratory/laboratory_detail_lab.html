@@ -1,0 +1,47 @@
+{% extends 'laboratory/base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    
+    <div class="col-md-3">
+        <div class="text-right">
+            <br>
+            <br>
+            <h5 class="text-primary mb-4 text-center">Laboratory</h5>
+            <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td style="background-color: #3399ff;"><a href="{{ url_for('laboratory_dashboard', laboratory_test_id=laboratory_test.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laboratory Test</a></td>
+                  </tr>
+                  <tr>
+                    <td style="background-color: #3399ff;"><a href="{{ url_for('add_laboratory') }}" style="color: rgb(3, 3, 3); text-decoration: none;">Add_Laporatory</a></td>
+                  </tr>
+                  <tr>
+                    <td style="background-color: #3399ff;"><a href="#" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
+                  </tr>
+                </tbody>
+              </table>
+</div>
+</div>
+    <div class="col-md-9">
+        <br>
+        <br>
+        <h5 class="text-primary mb-4 text-center">Detail of lab:</h5>
+      <form method="POST" action="{{ url_for('submit_lab_report', laboratory_test_id=laboratory_test.id) }}">
+        <div class="form-group">
+          <textarea class="form-control" id="report_data" name="report_data" rows="20" cols="30" value="This is some default text.">Patient Information:
+            {{ laboratory_test.data }}
+          </textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+      </form>
+    </div>
+  
+
+</div>
+</div>
+
+{% endblock %}

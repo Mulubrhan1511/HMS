@@ -23,7 +23,7 @@
                 <td style="background-color: #3399ff;"><a href="{{ url_for('patient_detail', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Report</a></td>
               </tr>
               <tr>
-                <td style="background-color: #3399ff;"><a href="/laboratory" style="color: rgb(3, 3, 3); text-decoration: none;">Laboratory</a></td>
+                <td style="background-color: #3399ff;"><a href="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laporatory</a></td>
               </tr>
               <tr>
                 <td style="background-color: #3399ff;"><a href="/laboratory" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
@@ -32,10 +32,10 @@
           </table>
         </div>
       </div>
-      <div class="col-md-9" style="right: 0;">
+      <div class="col-md-10" style="right: 0;">
   <form method="POST" action="{{ url_for('submit_report', patient_id=patient.id) }}">
     <div class="form-group">
-      <textarea class="form-control" id="report" name="report" rows="10" cols="50" value="This is some default text.">Patient Information:
+      <textarea class="form-control" id="report" name="report" rows="20" cols="30" value="This is some default text.">Patient Information:
 Name: &nbsp&nbsp{{ patient.first_name }} &nbsp&nbsp{{ patient.second_name }}
 Age: &nbsp&nbsp{{ age }}
 Gender: &nbsp&nbsp{{ patient.gender }}
@@ -65,7 +65,7 @@ Follow-up:
       <li class="list-group-item">
         <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}}</pre></div>
         <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
-          <textarea class="form-control" rows="6" cols="50" name="report_data">{{ report.data }}</textarea>
+          <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
           <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
           <input type="hidden" name="report_id" value="{{ report.id }}">
         </form>

@@ -59,3 +59,15 @@ class Report(db.Model):
     data = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
+class Laboratory_test(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.String(10000))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
+    paid = db.Column(db.Integer)
+    test = db.Column(db.Integer)
+    price = db.Column(db.Integer)
+class Laboratory_type(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    price = db.Column(db.Integer)

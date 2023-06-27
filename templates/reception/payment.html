@@ -1,0 +1,19 @@
+{% extends 'reception/base.html' %}
+
+{% block content %}
+  <h1 class="text-center" style="color: blue; background-color: white;">Reception</h1>
+
+  <ul class="list-group" style="display: block; margin: 30px auto; padding: 20px; padding-bottom: 100px;">
+    {% for laboratory_test in laboratory_test %}
+    <a href="{{ url_for('payment_for_lab', laboratory_test_id=laboratory_test.id) }}" class="text-decoration-none">
+    <li class="list-group-item d-flex justify-content-between align-items-center" >
+        {{  laboratory_test.patient_id }}
+        {{ laboratory_test.id }}
+        {{ laboratory_test.data.splitlines()[0] }}
+    </li>
+  </a>
+    {% endfor %}
+  </ul>
+  
+ 
+{% endblock %}
