@@ -33,7 +33,8 @@
         </div>
       </div>
       <div class="col-md-10" style="right: 0;">
-  <form method="POST" action="{{ url_for('submit_report', patient_id=patient.id) }}">
+        <button type="button" class="btn btn-primary" id="new-report-button">New</button>
+        <form method="POST" action="{{ url_for('submit_report', patient_id=patient.id) }}" id="new-report-form" style="display: none;">
     <div class="form-group">
       <textarea class="form-control" id="report" name="report" rows="20" cols="30" value="This is some default text.">Patient Information:
 Name: &nbsp&nbsp{{ patient.first_name }} &nbsp&nbsp{{ patient.second_name }}
@@ -78,48 +79,59 @@ Follow-up:
   
 {% endfor %}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="text-left">
-<script>
-$(document).ready(function() {
-  $('.btn-primary').click(function() {
-    var reportId = $(this).data('report-id');
-    var reportData = $('.report-data[data-report-id="' + reportId + '"]');
-    var editForm = $('.edit-report-form[data-report-id="' + reportId + '"]');
 
-    reportData.toggleClass('d-none');
-    editForm.toggleClass('d-none');
-    $(this).text(function(i, text) {
-      return text === 'Edit' ? 'Cancel' : 'Edit';
-    });
-  });
-
-  $('.edit-report-form').submit(function(event) {
-    event.preventDefault();
-    var form = $(this);
-    var data = form.serialize();
-    $.ajax({
-      url: '/edit_report',
-      type: 'POST',
-      data: data,
-      success: function(response) {
-        var reportId = form.data('report-id');
+  <script>
+    $(document).ready(function() {
+      $('#new-report-button').click(function() {
+        var isVisible = $('#new-report-form').is(':visible');
+        $('#new-report-form').toggle(!isVisible);
+        $('.cancel-report-button').toggle(isVisible);
+        $(this).text(isVisible ? 'New' : 'Cancel');
+      });
+      
+      $('.btn-primary').click(function() {
+        var reportId = $(this).data('report-id');
         var reportData = $('.report-data[data-report-id="' + reportId + '"]');
         var editForm = $('.edit-report-form[data-report-id="' + reportId + '"]');
-
-        reportData.text(response['report_data']);
+    
         reportData.toggleClass('d-none');
         editForm.toggleClass('d-none');
-        $('.btn-primary[data-report-id="' + reportId + '"]').text('Edit');
-      }
+      });
+    
+      $('.edit-report-form').submit(function(event) {
+        event.preventDefault();
+        var form = $(this);
+        var data = form.serialize();
+        $.ajax({
+          url: '/edit_report',
+          type: 'POST',
+          data: data,
+          success: function(response) {
+            var reportId = form.data('report-id');
+            var reportData = $('.report-data[data-report-id="' + reportId + '"]');
+            var editForm = $('.edit-report-form[data-report-id="' + reportId + '"]');
+            reportData.text(response['report_data']);
+            reportData.toggleClass('d-none');
+            editForm.toggleClass('d-none');
+          },
+          error: function() {
+            alert("An error occurred. Please try again.");
+          }
+        });
+      });
     });
-  });
-});
-</script>
+    </script>
+    
+    
+
+
 </div>
 </div>
 
 </div>
 </div>
 </div>
+
 {% endblock %}
