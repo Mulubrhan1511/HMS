@@ -1,0 +1,152 @@
+{% extends 'doctor/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <legend class="text-center">Select Laboratory Tests</legend>
+    
+
+    
+    <div class="container-fluid">
+      
+    <div class="row">
+      <div class="col-md-2">
+        <div class="text-right">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td style="background-color: #3399ff;"><a href="{{ url_for('patient_detail', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Report</a></td>
+              </tr>
+              <tr>
+                <td style="background-color: #3399ff;"><a href="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laporatory</a></td>
+              </tr>
+              <tr>
+                <td style="background-color: #3399ff;"><a href="{{ url_for('medicine', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-9">
+        
+        <form method="POST" class="col-md-9"  id="lab-test-form" action="{{ url_for('medicine', patient_id=patient.id) }}">
+            <fieldset>
+                <div style="position: relative;">
+                    <input class="form-control" type="text" id="search-input" placeholder="Search..." style="width: 500px; display: inline-block;">
+
+                    
+                    <div id="search-results" style="position: absolute; top: 100%;"></div>
+                  </div>
+                
+                  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                  <script>
+                    $(document).ready(function() {
+                      $('#search-input').on('input', function() {
+                        var query = $(this).val();
+                        if (query.length >= 3) {
+                          $.ajax({
+                            url: '/search_medicine', // Replace with the URL of your Flask endpoint
+                            method: 'POST',
+                            data: {query: query},
+                            dataType: 'json',
+                            success: function(response) {
+                              var results = '';
+                              $.each(response, function(index, item) {
+                                results += '<div class="search-result" style="background-color: rgb(244, 245, 244); color: blue; width: 500px;">'+ item.id + ' ' + item.name + ' ' + item.price + ' ' + item.total +'</div>';
+                              });
+                              $('#search-results').html(results);
+                            }
+                          });
+                        } else {
+                          $('#search-results').html('');
+                        }
+                      });
+                  
+                      $('#search-results').on('click', '.search-result', function() {
+                        var query = $(this).text();
+                        $('#search-input').val(query);
+                        $('#search-results').html('');
+                  
+                        // Extract the name, price, and total from the selected item
+                        var parts = query.split(' ');
+                        var id = parts[0];
+                        var name = parts[1];
+                        var price = parts[2];
+                        var total = parts[3];
+                        
+                  
+                        // Check if the medicine already exists in the table
+                        var existingRow = $('tr').filter(function() {
+                          return $(this).find('.medicine-name').text() === name &&
+                                 $(this).find('.medicine-price').text() === price &&
+                                 $(this).find('.medicine-total').text() === total &&
+                                 $(this).find('.medicine-name').text() === id; 
+                        });
+                  
+                        if (existingRow.length > 0) {
+                          // Update the existing row if it already exists
+                          var quantity = parseInt(existingRow.find('.medicine-quantity').text()) + 1;
+                          existingRow.find('.medicine-quantity').text(quantity);
+                        } else {
+                          // Create a new row in the table for the selected item
+                          var newRow = '<tr>' +
+  '<td class="medicine-id">' +
+    '<input type="hidden" name="medicine_id[]" value="' + id + '">' +
+    id +
+  '</td>' +
+  '<td class="medicine-name">' +
+    '<input type="hidden" name="medicine_name[]" value="' + name + '">' +
+    name +
+  '</td>' +
+  '<td class="medicine-price">' +
+    '<input type="hidden" name="medicine_price[]" value="' + price + '">' +
+    price +
+  '</td>' +
+  '<td class="medicine-total">' +
+    '<input type="hidden" name="medicine_total[]" value="' + total + '">' +
+    total +
+  '</td>' +
+  '<td class="medicine-quantity">' +
+    '<input type="number" class="form-control" id="' + id + '" name="medicine_quantity[]" value="' + total + '" style="width: 60px;">' +
+  '</td>' +
+'</tr>';
+
+$('#medicine-table').append(newRow);  // Append the new row to the table
+                        }
+                      });
+                    });
+                  </script>
+                  
+                  <table class="table table-striped mb-0" id="medicine-table">
+                    <thead style="background-color: #98FB98;">
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                  <button>Send</button>
+        </fieldset> 
+        </form>
+        </div>
+
+    </div>
+     
+</div>
+
+</div>
+<script>
+  $(document).ready(function() {
+    $('#new-lab-report-button').click(function() {
+      var isVisible = $('#lab-test-form').is(':visible');
+      $('#lab-test-form').toggle(!isVisible);
+      $(this).text(isVisible ? 'New' : 'Cancel');
+    });
+  });
+  </script>
+{% endblock %}

@@ -24,7 +24,7 @@
                 <td style="background-color: #3399ff;"><a href="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laporatory</a></td>
               </tr>
               <tr>
-                <td style="background-color: #3399ff;"><a href="#" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
+                <td style="background-color: #3399ff;"><a href="{{ url_for('medicine', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
               </tr>
             </tbody>
           </table>
@@ -33,7 +33,8 @@
       <div class="col-md-9">
         
         <div >
-            <form method="POST" action="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}">
+          <button type="button" class="btn btn-primary" id="new-lab-report-button">New</button>
+            <form method="POST" action="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" id="lab-test-form" style="display: none;">
                 <fieldset>
                   {% if laboratory_type %}
                   {% for laboratory_type in laboratory_type %}
@@ -97,5 +98,13 @@
 </div>
 
 </div>
-
+<script>
+  $(document).ready(function() {
+    $('#new-lab-report-button').click(function() {
+      var isVisible = $('#lab-test-form').is(':visible');
+      $('#lab-test-form').toggle(!isVisible);
+      $(this).text(isVisible ? 'New' : 'Cancel');
+    });
+  });
+  </script>
 {% endblock %}

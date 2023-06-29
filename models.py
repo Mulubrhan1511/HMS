@@ -53,6 +53,13 @@ class Reception(UserMixin, db.Model):
     specialty = db.Column(db.String(50))
     phone = db.Column(db.String(20))
     password = db.Column(db.String(128))
+class Pharmacist(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    email = db.Column(db.String(50))
+    specialty = db.Column(db.String(50))
+    phone = db.Column(db.String(20))
+    password = db.Column(db.String(128))
 
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -71,3 +78,9 @@ class Laboratory_type(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     price = db.Column(db.Integer)
+class Medicine(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    total = db.Column(db.Integer)
+    price = db.Column(db.Integer)
+    expired_date = db.Column(db.Date)

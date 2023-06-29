@@ -1,0 +1,56 @@
+{% extends 'pharmacist/base.html' %}
+
+{% block content %}
+ 
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="container">
+          <h2 class="text-primary mb-4">Other</h2>
+
+        </div>
+      </div>
+      <div class="col-md-9">
+        <h1>Add Medicine</h1>
+        <form method="POST">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" name="name">
+              
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" name="price">
+                
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Total</label>
+                <input type="number" class="form-control" id="total" name="total">
+                
+              </div>
+              <div class="mb-3">
+                <label for="date_of_birth" class="form-label">Expired Date</label>
+                <div class="input-group">
+                  <input type="date" class="form-control" id="expired_date" name="expired_date" data-target="#datepicker" required />
+                  <button class="btn btn-outline-secondary" type="button" id="datepicker" data-bs-toggle="datepicker"><i class="bi bi-calendar"></i></button>
+                </div>
+              </div>
+              
+              <script>
+                var datepickerTrigger = document.querySelectorAll('[data-bs-toggle="datepicker"]');
+                for (var i = 0; i < datepickerTrigger.length; ++i) {
+                  var datepicker = new bootstrap.Datepicker(datepickerTrigger[i], {
+                    autoClose: true,
+                    toggleActive: true,
+                    format: 'yyyy-mm-dd',
+                  });
+                }
+              </script>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}

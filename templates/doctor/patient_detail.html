@@ -26,7 +26,7 @@
                 <td style="background-color: #3399ff;"><a href="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laporatory</a></td>
               </tr>
               <tr>
-                <td style="background-color: #3399ff;"><a href="/laboratory" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
+                <td style="background-color: #3399ff;"><a href="{{ url_for('medicine', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
               </tr>
             </tbody>
           </table>

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request, Blueprint, get_flashed_messages,g
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import app, db, Patient, Doctor, Appointment, Reception, Laboratory, Report, Laboratory_test, Laboratory_type
+from models import app, db, Patient, Doctor, Appointment, Reception, Laboratory, Report, Laboratory_test, Laboratory_type, Pharmacist, Medicine
 from flask_login import login_user, login_required, logout_user, current_user, LoginManager
 from datetime import date
 
@@ -73,6 +73,10 @@ def signup():
             specialty = request.form['specialty']
             phone = '0919151121'
             new_user = Laboratory(name=name, password=hashed_password, specialty=specialty, phone=phone, email=email)
+        elif user_type == 'pharmacist':
+            specialty = request.form['specialty']
+            phone = '0919151121'
+            new_user = Pharmacist(name=name, password=hashed_password, specialty=specialty, phone=phone, email=email)
         db.session.add(new_user)
         db.session.commit()
 
@@ -117,6 +121,13 @@ def login():
             login_user(laboratory, remember=True)
             flash('You have been logged in successfully.', 'success')
             return redirect(url_for('laboratory_dashboard'))
+        pharmacist = Pharmacist.query.filter_by(email=email).first()
+        if pharmacist and check_password_hash(pharmacist.password, password):
+            # Log in the doctor
+            login_user(pharmacist, remember=True)
+            flash('You have been logged in successfully.', 'success')
+            return redirect(url_for('pharmacist_dashboard'))
+        
         # Invalid credentials
         flash('Invalid email or password', 'error')
 
@@ -139,6 +150,13 @@ def doctor_dashboard():
     patients = Patient.query.filter(Patient.doctor_id == current_user.id).all()
     # Render the doctor dashboard with a welcome message
     return render_template('doctor/doctor_dashboard.html', name = name, patients = patients)
+@app.route('/pharmacist_dashboard')
+@login_required
+def pharmacist_dashboard():
+# Get the current user's name
+
+    # Render the doctor dashboard with a welcome message
+    return render_template('pharmacist/pharmacist_dashboard.html')
 @app.route('/new_user', methods=['GET', 'POST'])
 @login_required
 def new_user():
@@ -211,6 +229,17 @@ def patient_detail(patient_id):
     
     print("The age of the patient is:", age)
     return render_template('doctor/patient_detail.html', patient=patient, report=reports, age=age)
+@app.route('/medicine/<int:patient_id>', methods=['GET', 'POST'])
+def medicine(patient_id):
+    if request.method == 'POST':
+        patient = Patient.query.filter(Patient.id == patient_id).first()
+        medicine_names = request.form.getlist('medicine_quantity[]')
+        medicine_prices = request.form.getlist('medicine_price[]')
+        medicine_totals = request.form.getlist('medicine_total[]')
+        print(medicine_names)
+        return render_template('doctor/medicine.html', patient=patient)
+    patient = Patient.query.filter(Patient.id == patient_id).first()
+    return render_template('doctor/medicine.html', patient=patient)
 @app.route('/laboratory_detail_doctor/<int:patient_id>', methods=['GET', 'POST'])
 def laboratory_detail_doctor(patient_id):
     if request.method == 'POST':
@@ -246,6 +275,7 @@ def laboratory_detail_doctor(patient_id):
 @app.route('/laboratory_detail_lab/<int:laboratory_test_id>', methods=['GET', 'POST'])
 def laboratory_detail_lab(laboratory_test_id):
     laboratory_test = Laboratory_test.query.filter(Laboratory_test.id == laboratory_test_id).first()
+
     return render_template('laboratory/laboratory_detail_lab.html', laboratory_test=laboratory_test)
 reception_bp = Blueprint('reception', __name__)
 @reception_bp.route('/patient/<int:patient_id>')
@@ -285,7 +315,21 @@ def search():
         ).all()
         for patient in patients:
             results.append({'first_name': patient.first_name, 'second_name': patient.second_name,'email': patient.email, 'phone': patient.phone, 'id':patient.id})
-    return jsonify(results)  
+    return jsonify(results)
+@app.route('/search_medicine', methods=['POST'])
+def search_medicine():
+    query = request.form.get('query')
+    # perform a search for patients by name, email, or phone
+    results = []
+    if query:
+        medicines = Medicine.query.filter(
+            (Medicine.name.ilike(f'%{query}%')) |
+            (Medicine.total.ilike(f'%{query}%')) |
+            (Medicine.expired_date.ilike(f'%{query}%'))
+        ).all()
+        for medicines in medicines:
+            results.append({'name': medicines.name, 'total': medicines.total, 'price': medicines.price, 'id': medicines.id})
+    return jsonify(results)   
 
 @app.route('/submit_report/<int:patient_id>', methods=['POST'])
 def submit_report(patient_id):
@@ -305,7 +349,19 @@ def add_laboratory():
         db.session.commit()
         return redirect(url_for('add_laboratory'))
     return render_template('laboratory/add_laboratory.html')
-    
+
+@app.route('/add_medicine', methods=['GET', 'POST'])
+def add_medicine():
+    if request.method == 'POST':
+        name = request.form['name']
+        price = request.form['price']
+        total = request.form['total']
+        expired_date = request.form['expired_date']
+        new_med = Medicine(name=name, price=price, total=total, expired_date=expired_date)
+        db.session.add(new_med)
+        db.session.commit()
+        return redirect(url_for('add_medicine'))
+    return render_template('pharmacist/add_medicine.html')
 @app.route('/submit_lab_report/<int:laboratory_test_id>', methods=['POST'])
 def submit_lab_report(laboratory_test_id):
     report_data = request.form['report_data']
