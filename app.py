@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import app, db, Patient, Appointment, Report, Laboratory_test, Laboratory_type,  Medicine, Medication_report, User
 from flask_login import login_user, login_required, logout_user, current_user, LoginManager
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from flask_socketio import SocketIO, emit
 
 
@@ -22,7 +22,7 @@ def load_user(user_id):
 # Create the tables
 with app.app_context():
     db.create_all()
-socketio = SocketIO()
+socketio = SocketIO(app, async_mode='eventlet')
 
 @socketio.on('connect')
 def on_connect():
@@ -121,7 +121,10 @@ def patient_dashboard():
 @app.route('/doctor_dashboard')
 @login_required
 def doctor_dashboard():
-# Get the current user's name
+    # Get the current user's name
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
     name = current_user if current_user.is_authenticated else ''
     patients = Patient.query.filter(Patient.doctor_id == current_user.id).all()
     # Render the doctor dashboard with a welcome message
@@ -129,7 +132,10 @@ def doctor_dashboard():
 @app.route('/pharmacist_dashboard')
 @login_required
 def pharmacist_dashboard():
-# Get the current user's name
+    # Get the current user's name
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
     med = Medication_report.query.filter(Medication_report.paid == 1, Medication_report.test == 0).all()
     # Render the doctor dashboard with a welcome message
     return render_template('pharmacist/pharmacist_dashboard.html',med=med)
@@ -181,14 +187,21 @@ def new_user():
 @app.route('/reception_dashboard', methods=['GET', 'POST'])
 @login_required
 def reception_dashboard():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+    cutoff = datetime.utcnow() - timedelta(minutes=1)
+    online = User.query.filter(User.last_seen > cutoff).all()
     name = current_user if current_user.is_authenticated else ''
     doctors = User.query.filter(User.type == 'doctor').all()
-    online = User.query.filter(User.online == 1).all()
     return render_template('reception/reception_dashboard.html', name=name, doctors = doctors, online=online)
 
 @app.route('/laboratory_dashboard', methods=['GET', 'POST'])
 @login_required
 def laboratory_dashboard():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
     name = current_user.email if current_user.is_authenticated else ''
     laboratory_test =Laboratory_test.query.filter(Laboratory_test.paid==1, Laboratory_test.test==0).all()
     return render_template('laboratory/laboratory_dashboard.html', name=name, laboratory_test=laboratory_test)
@@ -435,4 +448,4 @@ def before_request():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)

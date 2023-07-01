@@ -2,12 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from flask_login import UserMixin
-
+from flask_socketio import SocketIO, emit
+from datetime import date, datetime
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://hospital_user:password@localhost/hospital_db'
-app.secret_key = 'your_secret_key_here'
+app.config['SECRET_KEY'] = 'mysecretkey'
+socketio = SocketIO(app, async_mode=None)
 
 db = SQLAlchemy(app)
 class Patient(UserMixin, db.Model):
@@ -34,7 +36,8 @@ class User(UserMixin, db.Model):
     city = db.Column(db.String(50))
     state = db.Column(db.String(50))
     type = db.Column(db.String(50))
-    online = db.Column(db.Integer)
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    online = db.Column(db.Integer, server_default='0')
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
