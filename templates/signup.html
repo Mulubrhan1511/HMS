@@ -5,36 +5,80 @@
 {% block content %}
   <h1>Sign Up</h1>
   <form method="POST">
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" required>
-
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required>
-
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-
-    <label for="confirm_password">Confirm Password</label>
-    <input type="password" id="confirm_password" name="confirm_password" required>
-
-    <label for="type">User Type </label>
-    <select id="type" name="type" required>
-      <option value="patient">Patient</option>
-      <option value="doctor">Doctor</option>
-      <option value="reception">Reception</option>
-      <option value="laboratory">Laboratory</option>
-      <option value="pharmacist">Pharmacist</option>
-    </select>
-
-    <div id="doctor-fields" style="display: none;">
-      <label for="specialty">Specialty</label>
-      <input type="text" id="specialty" name="specialty">
-
-      <label for="phone">Phone</label>
-"phone" name="phone">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="first_name" name="first_name" required>
     </div>
-
-    <button type="submit">Sign Up</button>
+    <div class="mb-3">
+      <label for="name" class="form-label">Father Name</label>
+      <input type="text" class="form-control" id="second_name" name="second_name" required>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input class="form-control" type="email" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">Phone</label>
+      <input class="form-control" type="tel" id="phone" name="phone" required>
+    </div>
+    <div class="mb-3">
+      <label for="name" class="form-label">City</label>
+      <input type="text" class="form-control" id="city" name="city" required>
+    </div>
+    <div class="mb-3">
+      <label for="name" class="form-label">State</label>
+      <input type="text" class="form-control" id="state" name="state" required>
+    </div>
+    <div class="mb-3">
+      <label for="type" class="form-label">Gender</label>
+      <select id="gender" name="gender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="date_of_birth" class="form-label">Date of Birth</label>
+      <div class="input-group">
+        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" data-target="#datepicker" required />
+        <button class="btn btn-outline-secondary" type="button" id="datepicker" data-bs-toggle="datepicker"><i class="bi bi-calendar"></i></button>
+      </div>
+    </div>
+    
+    <script>
+      var datepickerTrigger = document.querySelectorAll('[data-bs-toggle="datepicker"]');
+      for (var i = 0; i < datepickerTrigger.length; ++i) {
+        var datepicker = new bootstrap.Datepicker(datepickerTrigger[i], {
+          autoClose: true,
+          toggleActive: true,
+          format: 'yyyy-mm-dd',
+        });
+      }
+    </script>
+    <div class="mb-3">
+      <label class="form-label" for="password">Password</label>
+      <input class="form-control" type="password" id="password" name="password" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="confirm_password">Confirm Password</label>
+      <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
+    </div>
+    <div class="mb-3">
+      <label for="type" class="form-label">User Type</label>
+      <select id="type" name="type" required>
+        <option value="doctor">Doctor</option>
+        <option value="laboratory">Laboratory</option>
+        <option value="reception">Reception</option>
+        <option value="pharmacist">Pharmacist</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div id="doctor-fields" style="display: none;">
+      <label for="specialty" class="form-label">Specialty</label>
+      <input type="text" id="specialty" name="specialty" class="form-control">
+      <label for="doctor-phone" class="form-label">Doctor Phone</label>
+      <input type="tel" id="doctor-phone" name="doctor-phone" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary" style="position: relative; z-index: 1;">Sign Up</button>
   </form>
 {% endblock %}
 

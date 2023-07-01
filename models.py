@@ -21,45 +21,28 @@ class Patient(UserMixin, db.Model):
     gender = db.Column(db.String(10))
     city = db.Column(db.String(50))
     state = db.Column(db.String(50))
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
-
-class Doctor(UserMixin, db.Model):
+    doctor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
+    first_name = db.Column(db.String(50))
+    second_name = db.Column(db.String(50))
     email = db.Column(db.String(50))
-    specialty = db.Column(db.String(50))
     phone = db.Column(db.String(20))
     password = db.Column(db.String(128))
-
-class Laboratory(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
-    email = db.Column(db.String(50))
-    specialty = db.Column(db.String(50))
-    phone = db.Column(db.String(20))
-    password = db.Column(db.String(128))
-
+    date_of_birth = db.Column(db.Date)
+    gender = db.Column(db.String(10))
+    city = db.Column(db.String(50))
+    state = db.Column(db.String(50))
+    type = db.Column(db.String(50))
+    online = db.Column(db.Integer)
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'))
+    doctor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     date = db.Column(db.Date)
     time = db.Column(db.Time)
 
-class Reception(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
-    email = db.Column(db.String(50))
-    specialty = db.Column(db.String(50))
-    phone = db.Column(db.String(20))
-    password = db.Column(db.String(128))
-class Pharmacist(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
-    email = db.Column(db.String(50))
-    specialty = db.Column(db.String(50))
-    phone = db.Column(db.String(20))
-    password = db.Column(db.String(128))
+
 
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -84,3 +67,11 @@ class Medicine(UserMixin, db.Model):
     total = db.Column(db.Integer)
     price = db.Column(db.Integer)
     expired_date = db.Column(db.Date)
+class Medication_report(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.String(10000))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
+    paid = db.Column(db.Integer)
+    test = db.Column(db.Integer)
+    price = db.Column(db.Integer)

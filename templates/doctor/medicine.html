@@ -2,6 +2,7 @@
 
 {% block content %}
 
+
 <div class="container">
     <legend class="text-center">Select Laboratory Tests</legend>
     
@@ -28,9 +29,11 @@
         </div>
       </div>
       <div class="col-md-9">
-        
-        <form method="POST" class="col-md-9"  id="lab-test-form" action="{{ url_for('medicine', patient_id=patient.id) }}">
+        <button type="button" class="btn btn-primary" id="new-lab-report-button">Order Medcine</button>
+        <form method="POST" class="col-md-9"  id="lab-test-form" action="{{ url_for('medicine', patient_id=patient.id) }}" id="lab-test-form" style="display: none;">
             <fieldset>
+              
+            
                 <div style="position: relative;">
                     <input class="form-control" type="text" id="search-input" placeholder="Search..." style="width: 500px; display: inline-block;">
 
@@ -107,7 +110,7 @@
     total +
   '</td>' +
   '<td class="medicine-quantity">' +
-    '<input type="number" class="form-control" id="' + id + '" name="medicine_quantity[]" value="' + total + '" style="width: 60px;">' +
+    '<input type="number" class="form-control" id="' + id + '" name="medicine_quantity[]" style="width: 60px;">' +
   '</td>' +
 '</tr>';
 
@@ -133,6 +136,44 @@ $('#medicine-table').append(newRow);  // Append the new row to the table
                   <button>Send</button>
         </fieldset> 
         </form>
+        {% if report %}
+        <ul class="list-group">
+          {% for report in report %}
+          {% if report.test == 0 %}
+          <li class="list-group-item list-group-item-action list-group-item-primary">
+            {{ report.date }}
+            <h9 style="float: right;">Pending</h9>
+        </li>
+          <li class="list-group-item">
+            <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}} </pre></div>
+            <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
+              <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
+              <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+              <input type="hidden" name="report_id" value="{{ report.id }}">
+            </form>
+          
+          </li>
+          {% else %}
+          <li class="list-group-item list-group-item-action list-group-item-primary">
+            {{ report.date }}
+            <h9 style="float: right;">Done</h9> 
+          </li>
+          <li class="list-group-item">
+            <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}}</pre></div>
+            <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
+              <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
+              <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+              <input type="hidden" name="report_id" value="{{ report.id }}">
+            </form>
+          
+          </li>
+          {% endif %}
+  
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>No Lab reports found.</p>
+        {% endif %}
         </div>
 
     </div>
@@ -145,7 +186,7 @@ $('#medicine-table').append(newRow);  // Append the new row to the table
     $('#new-lab-report-button').click(function() {
       var isVisible = $('#lab-test-form').is(':visible');
       $('#lab-test-form').toggle(!isVisible);
-      $(this).text(isVisible ? 'New' : 'Cancel');
+      $(this).text(isVisible ? 'Order Medcine' : 'Cancel');
     });
   });
   </script>

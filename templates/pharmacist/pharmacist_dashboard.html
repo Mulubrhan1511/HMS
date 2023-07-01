@@ -11,7 +11,18 @@
         </div>
       </div>
       <div class="col-md-9">
-        <h1>The Ordered Medicine</h1>
+        <h1>Ordered Medicine</h1>
+        <ul class="list-group" style="display: block; margin: 30px auto; padding: 20px; padding-bottom: 100px;">
+          {% for med in med %}
+          <a href="{{ url_for('med_detail', med_id=med.id) }}" class="text-decoration-none">
+          <li class="list-group-item d-flex justify-content-between align-items-center" >
+              {{  med.patient_id }}
+              {{ med.id }}
+              {{ med.data.splitlines()[0] }}
+          </li>
+        </a>
+          {% endfor %}
+        </ul>
       </div>
     </div>
   </div>

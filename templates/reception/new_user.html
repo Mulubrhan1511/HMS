@@ -78,7 +78,7 @@
           <label for="doctor" class="form-label">Available Doctor</label>
           <select id="doctor" name="doctor" required>
             {% for doctor in doctors %}
-            <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+            <option value="{{ doctor.id }}">{{ doctor.first_name }}</option>
             {% endfor %}
           </select>
         </div>
