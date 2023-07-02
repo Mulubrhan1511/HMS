@@ -170,7 +170,7 @@ def new_user():
         gender = request.form['gender']
         city = request.form['city']
         state = request.form['state']
-        new_user = Patient(second_name=second_name,first_name=first_name, email=email, password=hashed_password, state=state, city=city, date_of_birth=date_of_birth, gender=gender, doctor_id=doctor_id)
+        new_user = Patient(second_name=second_name,first_name=first_name, email=email, password=hashed_password, state=state, city=city, date_of_birth=date_of_birth, gender=gender, doctor_id=doctor_id, phone=phone)
         db.session.add(new_user)
         db.session.commit()
 
