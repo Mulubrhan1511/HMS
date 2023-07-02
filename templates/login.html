@@ -1,40 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Patient Login</title>
-	<link rel="stylesheet" type="text/css" href="patientlogin.css">
-    
+    <title>Login</title>
 </head>
 <body>
-	<div class="container"></div>
-	<div class="loginbox">
-		<h1>Patient Login</h1>
-		{% with messages = get_flashed_messages(with_categories=true) %}
+    <h1>Login</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }}">{{ message }}</div>
             {% endfor %}
         {% endif %}
     {% endwith %}
-		<form method="POST" action="{{ url_for('login') }}">
-			<label for="username">Username</label>
-			<input type="text" id="username" name="username" placeholder="Enter Username">
-            
-			<label for="password">Password</label>
-			<input type="password" id="password" name="password" placeholder="Enter Password">
-
-			<input type="button"  id="login-button" value="Login">
-			<a href="passwordreset.html">Forgot Password?</a>
-			<a href="patientreg.html">Create an Account</a>
-		</form>
-		<script>
-			 const loginButton = document.getElementById("login-button");
-             loginButton.addEventListener("click", function() {
-             window.location.href = "patienthome.html";} );
-    
-		</script>
-			
-	</div>
+    <form method="POST" action="{{ url_for('login') }}">
+        <label>Email</label>
+        <input type="email" name="email" required>
+        <br><br>
+        <label>Password</label>
+        <input type="password" name="password" required>
+        <br><br>
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>
