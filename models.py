@@ -9,6 +9,7 @@ from datetime import date, datetime
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://hospital_user:password@localhost/hospital_db'
 app.config['SECRET_KEY'] = 'mysecretkey'
+app.config['UPLOAD_FOLDER'] = '/img'
 socketio = SocketIO(app, async_mode=None)
 
 db = SQLAlchemy(app)
@@ -38,6 +39,13 @@ class User(UserMixin, db.Model):
     type = db.Column(db.String(50))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     online = db.Column(db.Integer, server_default='0')
+    image = db.Column(db.LargeBinary)
+    def set_image(self, filename):
+        with open(filename, 'rb') as file:
+            self.image = file.read()
+
+    def get_image(self):
+        return self.image
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
@@ -64,6 +72,7 @@ class Laboratory_type(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     price = db.Column(db.Integer)
+    active = db.Column(db.Boolean, default=False)
 class Medicine(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))

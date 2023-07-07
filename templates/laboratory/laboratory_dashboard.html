@@ -1,52 +1,60 @@
 {% extends 'laboratory/base.html' %}
 {% block content %}
-<h2 class="text-primary mb-4 text-center">Detail of lab Detail of lab: {{ name }}</h2>
+<br>
+<br>
 <div class="container-fluid">
-  
-  <div class="row">
-    <div class="col-md-3">
-      <br>
-      <br>
-      <h5 class="text-primary mb-4 text-center">Laboratory</h5>
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <td style="background-color: #3399ff;"><a href="{{ url_for('laboratory_dashboard') }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laboratory Test</a></td>
-          </tr>
-          <tr>
-            <td style="background-color: #3399ff;"><a href="{{ url_for('add_laboratory') }}" style="color: rgb(3, 3, 3); text-decoration: none;">Add_Laporatory</a></td>
-          </tr>
-          <tr>
-            <td style="background-color: #3399ff;"><a href="#" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
-          </tr>
-        </tbody>
-      </table>
-</div>
-    <div class="col-md-9">
-      <br>
-      <br>
-      <h5 class="text-primary mb-4 text-center">Laboratory Laboratory Report</h5>
-        <div class="text-right">
-      <div class="container">
-        
 
-        <ul class="list-group" style="display: block; margin: 30px auto; padding: 20px; padding-bottom: 100px;">
-            {% for laboratory_test in laboratory_test %}
-            <a href="{{ url_for('laboratory_detail_lab', laboratory_test_id=laboratory_test.id) }}" class="text-decoration-none">
-            <li class="list-group-item d-flex justify-content-between align-items-center" >
-                {{  laboratory_test.patient_id }}
-                {{ laboratory_test.id }}
-                {{ laboratory_test.data.splitlines()[0] }}
-            </li>
-          </a>
-            {% endfor %}
-          </ul>
-          
-    </div>
-    </div>
-  
+
+      <div class="row">
+
+        <div class="col-md-9">
+
+          {% for laboratory_test in laboratory_test %}
+          <div class="card" style="width: 900px">
+          <div class="card-header" style="color: white; background-color: #6778ff;">
+          <h3 class="card-title text-center"> Your Patients</h3>
+          </div>
+
+          <div class="card-body">
+          <table class="table table-bordered">
+          <thead style="width: 100px">
+          <tr>
+
+          <th style="width: 50px">#</th>
+          <th style="width: 100px">Paient_id</th>
+          <th style="width: 100px">Name</th>
+
+
+          <th style="width: 30px">Test</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr>
+
+          <td>{{laboratory_test.id}}</td>
+          <td>{{laboratory_test.patient_id}}</td>
+
+
+        <td>{{ laboratory_test.data.split('\n')[0] }}</td>
+
+          <td><a href="{{ url_for('laboratory_detail_lab', laboratory_test_id=laboratory_test.id) }}" class="text-decoration-none">Test</a></td>
+
+          </tr>
+
+          </tbody>
+
+          </table>
+          </div>
+
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+
+
+
 
 </div>
-</div>
-
 {% endblock %}

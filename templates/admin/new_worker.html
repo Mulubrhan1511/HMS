@@ -1,0 +1,169 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<body class="hold-transition sidebar-mini">
+<form method="POST" enctype="multipart/form-data">
+<div class="wrapper">
+<section class="content-header">
+<div class="container-fluid">
+<div class="row mb-2">
+<div class="col-sm-6">
+<h1>Workers Form<h1>
+
+
+</h1>
+</div>
+</div>
+</div>
+</section>
+
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+
+<div class="col-md-6">
+
+<div class="card card-primary">
+<div class="card-header">
+
+</div>
+
+
+<div>
+<div class="card-body">
+<div class="form-group">
+  <label for="name" class="form-label">First Name</label>
+  <input type="text" class="form-control" id="first_name" name="first_name" required pattern="[a-zA-Z]+">
+</div>
+<div class="form-group">
+  <label for="name" class="form-label">Last Name</label>
+  <input type="text" class="form-control" id="second_name" name="second_name" required pattern="[a-zA-Z]+">
+</div>
+<div class="form-group">
+  <label for="email" class="form-label">Email address</label>
+  <input class="form-control" type="email" id="email" name="email" required>
+</div>
+<div class="form-group">
+  <label class="form-label" for="password">Password</label>
+  <input class="form-control" type="password" id="password" name="password" required>
+</div>
+<div class="form-group">
+  <label class="form-label" for="confirm_password">Confirm Password</label>
+  <input class="form-control" type="password" id="confirm_password" name="confirm_password" required>
+</div>
+<div class="form-group">
+  <label for="image" class="form-label">Image</label>
+  <input type="file" class="form-control" id="image" name="image">
+</div>
+</div>
+
+<div class="card-footer">
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+<div class="col-md-6">
+
+  <div class="card card-primary">
+  <div class="card-header">
+
+  </div>
+
+
+  <div>
+  <div class="card-body">
+  <div class="form-group">
+    <label for="phone" class="form-label">Phone</label>
+    <input class="form-control" type="number" id="phone" name="phone" required>
+  </div>
+  <div class="form-group">
+    <label for="name" class="form-label">City</label>
+    <input type="text" class="form-control" id="city" name="city" required>
+  </div>
+  <div class="form-group">
+    <label for="name" class="form-label">State</label>
+    <input type="text" class="form-control" id="state" name="state" required>
+  </div>
+  <div class="form-group">
+    <label for="type" class="form-label">Gender</label>
+    <select id="gender" name="gender" required>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="date_of_birth" class="form-label">Date of Birth</label>
+    <div class="input-group">
+      <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" data-target="#datepicker" required />
+      <button class="btn btn-outline-secondary" type="button" id="datepicker" data-bs-toggle="datepicker"><i class="bi bi-calendar"></i></button>
+    </div>
+    </div>
+<div class="form-group">
+  <label for="type" class="form-label">User Type</label>
+  <select id="type" name="type" required>
+    <option value="doctor">Doctor</option>
+    <option value="laboratory">Laboratory</option>
+    <option value="reception">Reception</option>
+    <option value="pharmacist">Pharmacist</option>
+    <option value="admin">Admin</option>
+  </select>
+  </div>
+
+  </div>
+
+
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+
+
+
+
+
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    const typeSelect = document.getElementById("type");
+    const doctorFields = document.getElementById("doctor-fields");
+
+    typeSelect.addEventListener("change", () => {
+      if (typeSelect.value === "doctor") {
+        doctorFields.style.display = "block";
+      } else {
+        doctorFields.style.display = "none";
+      }
+    });
+  </script>
+{% endblock %}

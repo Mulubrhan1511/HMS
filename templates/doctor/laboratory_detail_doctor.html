@@ -1,103 +1,122 @@
 {% extends 'doctor/base.html' %}
 
 {% block content %}
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12">
+<div class="card" style="background-color: #e3ede8;">
+<div class="card-header" style="color: white; background-color: #6778ff;">
+<h3 class="card-title">Detail {{patient.first_name}} {{patient.second_name}}</h3>
+</div>
 
-<div class="container">
-    <legend class="text-center">Select Laboratory Tests</legend>
-    
-    <li class="list-group-item d-flex justify-content-between align-items-center" >
-      
-      <span class="badge bg-primary rounded-pill">{{ patient.status }}</span>
-    </li>
-    
-    <div class="container-fluid">
-      
-    <div class="row">
-      <div class="col-md-2">
-        <div class="text-right">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td style="background-color: #3399ff;"><a href="{{ url_for('patient_detail', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Report</a></td>
-              </tr>
-              <tr>
-                <td style="background-color: #3399ff;"><a href="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laporatory</a></td>
-              </tr>
-              <tr>
-                <td style="background-color: #3399ff;"><a href="{{ url_for('medicine', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-9">
-        
-        <div >
-          <button type="button" class="btn btn-primary" id="new-lab-report-button">New</button>
-            <form method="POST" action="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" id="lab-test-form" style="display: none;">
-                <fieldset>
-                  {% if laboratory_type %}
-                  {% for laboratory_type in laboratory_type %}
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="hello" id="{{ laboratory_type.id }}" value="{{ laboratory_type.name }}">
-                    <label class="form-check-label" for="inlineCheckbox1">{{ laboratory_type.name }}</label>
-                  </div>
-                  {% endfor %}
-                  {% else %}
-                  No Laboratory Test Yet!
-                  {% endif %}
-               
-                <br>
-                <button type="submit" class="btn btn-primary mt-4">Send</button>
-            </fieldset> 
-            </form>
+<div class="card-body">
+<table class="table table-bordered">
+<thead>
+<tr>
+
+<th style="color: #ffffff; width: 50px; background-color: #7e858a;">Patient Information</th>
+<th style="text-align: center; color: #ffffff; font-weight: bold; background-color: #7e858a;">Laboratory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+  <table class="table table-bordered">
+    <tr>
+      <td style="background-color: #a1a6a9;"><a href="{{ url_for('patient_detail', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Report</a></td>
+
+    </tr>
+    <tr>
+      <td style="background-color: #a1a6a9;"><a href="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laboratory</a></td>
+
+    </tr>
+    <tr>
+      <td style="background-color: #a1a6a9;"><a href="{{ url_for('medicine', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
+
+    </tr>
+  </table>
+
+</td>
+
+<td>
+  <div class="col-md-9">
+
+    <div >
+      <button type="button" class="btn btn-primary" id="new-lab-report-button">New</button>
+        <form method="POST" action="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" id="lab-test-form" style="display: none;">
+            <fieldset>
+              {% if laboratory_type %}
+              {% for laboratory_type in laboratory_type %}
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="hello" id="{{ laboratory_type.id }}" value="{{ laboratory_type.name }}">
+                <label class="form-check-label" for="inlineCheckbox1">{{ laboratory_type.name }}</label>
+              </div>
+              {% endfor %}
+              {% else %}
+              No Laboratory Test Yet!
+              {% endif %}
+
             <br>
-        {% if report %}
-        <ul class="list-group">
-          {% for report in report %}
-          {% if report.test == 0 %}
-          <li class="list-group-item list-group-item-action list-group-item-primary">
-            {{ report.date }}
-            <h9 style="float: right;">Pending</h9>
-        </li>
-          <li class="list-group-item">
-            <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}} </pre></div>
-            <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
-              <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
-              <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
-              <input type="hidden" name="report_id" value="{{ report.id }}">
-            </form>
-          
-          </li>
-          {% else %}
-          <li class="list-group-item list-group-item-action list-group-item-primary">
-            {{ report.date }}
-            <h9 style="float: right;">Done</h9> 
-          </li>
-          <li class="list-group-item">
-            <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}}</pre></div>
-            <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
-              <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
-              <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
-              <input type="hidden" name="report_id" value="{{ report.id }}">
-            </form>
-          
-          </li>
-          {% endif %}
-  
-          {% endfor %}
-        </ul>
-        {% else %}
-        <p>No Lab reports found.</p>
-        {% endif %}
-    </div>  
-        </div>
+            <button type="submit" class="btn btn-primary mt-4">Send</button>
+        </fieldset>
+        </form>
+        <br>
+    {% if report %}
+    <ul class="list-group">
+      {% for report in report %}
+      {% if report.test == 0 %}
+      <li class="list-group-item list-group-item-action list-group-item-primary">
+        {{ report.date }}
+        <h9 style="float: right;">Pending</h9>
+    </li>
+      <li class="list-group-item">
+        <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}} </pre></div>
+        <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
+          <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
+          <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+          <input type="hidden" name="report_id" value="{{ report.id }}">
+        </form>
 
+      </li>
+      {% else %}
+      <li class="list-group-item list-group-item-action list-group-item-primary">
+        {{ report.date }}
+        <h9 style="float: right;">Done</h9>
+      </li>
+      <li class="list-group-item">
+        <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}}</pre></div>
+        <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
+          <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
+          <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+          <input type="hidden" name="report_id" value="{{ report.id }}">
+        </form>
+
+      </li>
+      {% endif %}
+
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No Lab reports found.</p>
+    {% endif %}
+</div>
     </div>
-     
+
+</td>
+
+</tr>
+
+</tbody>
+</table>
 </div>
 
+
 </div>
+</div>
+</div>
+</div>
+</section>
 <script>
   $(document).ready(function() {
     $('#new-lab-report-button').click(function() {
@@ -107,4 +126,5 @@
     });
   });
   </script>
+
 {% endblock %}

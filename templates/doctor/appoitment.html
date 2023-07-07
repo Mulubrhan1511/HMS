@@ -1,0 +1,53 @@
+{% extends 'doctor/base.html' %}
+
+{% block content %}
+<div class="row">
+
+  <div class="col-md-12">
+
+    <div class="card" style="width: 900px">
+    <div class="card-header" style="color: white; background-color: #6778ff;">
+    <h3 class="card-title text-center"> Appointments</h3>
+    </div>
+
+    <div class="card-body">
+    <table class="table table-bordered">
+    <thead style="width: 100px">
+    <tr>
+
+    <th style="width: 50px">#</th>
+    <th style="width: 100px">Patient Name</th>
+    <th style="width: 100px">Date</th>
+    <th style="width: 50px">Time</th>
+    <th style="width: 30px">View</th>
+    </tr>
+    </thead>
+
+    <tbody>
+        {% for appointments in appointments %}
+    <tr>
+
+    <td>{{appointments.id}}</td>
+
+      <td>{{appointments.patient_id}}</td>
+
+
+  <td>{{ appointments.date }}</td>
+
+    <td>{{ appointments.time}}</td>
+
+    <td><a href="{{ url_for('patient_detail', patient_id=appointments.patient_id) }}" class="text-decoration-none">View </a></td>
+
+    </tr>
+
+    </tbody>
+
+    </table>
+    </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+
+
+
+  <section class="content">
+  <div class="container-fluid">
+
+  <div class="row">
+  <div class="col-lg-3 col-6">
+
+  <div class="small-box bg-info">
+  <div class="inner">
+  <h3>{{ doctor_count }}</h3>
+  <p>Doctors</p>
+  </div>
+  <div class="icon">
+  <i ><img src="{{ url_for('static', filename='uploads/user-doctor-solid.svg')}}" alt="User image" style="width: 40px; height: 40px; border-radius: 50%;"></i>
+  </div>
+  <a href="{{ url_for('detail_user', type='doctor') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+  </div>
+
+  <div class="col-lg-3 col-6">
+
+  <div class="small-box bg-success">
+  <div class="inner">
+  <h3>{{ reception_count }}</h3>
+  <p>Reception</p>
+  </div>
+  <div class="icon">
+  <i ><img src="{{ url_for('static', filename='uploads/pen-solid.svg')}}" alt="User image" style="width: 40px; height: 40px; border-radius: 50%;"></i>
+  </div>
+  <a href="{{ url_for('detail_user', type='reception') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+  </div>
+
+  <div class="col-lg-3 col-6">
+
+  <div class="small-box bg-warning">
+  <div class="inner">
+  <h3>{{ laboratory_count }}</h3>
+  <p>Laboratory</p>
+  </div>
+  <div class="icon">
+  <i ><img src="{{ url_for('static', filename='uploads/flask-vial-solid.svg')}}" alt="User image" style="width: 40px; height: 40px; border-radius: 50%;"></i>
+  </div>
+  <a href="{{ url_for('detail_user', type='laboratory') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+  </div>
+
+  <div class="col-lg-3 col-6">
+
+  <div class="small-box bg-danger">
+  <div class="inner">
+  <h3>{{pharmacist_count}}</h3>
+  <p>Pharmacist</p>
+  </div>
+  <div class="icon">
+  <i ><img src="{{ url_for('static', filename='uploads/notes-medical-solid.svg')}}" alt="User image" style="width: 40px; height: 40px; border-radius: 50%;"></i>
+  </div>
+  <a href="{{ url_for('detail_user', type='pharmacist') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+  </div>
+
+  </div>
+<br>
+<br>
+<br>
+
+  <section class="content">
+  <div class="container-fluid">
+
+  <div class="row">
+  <div class="col-lg-3 col-6">
+
+  <div class="small-box bg-dark">
+  <div class="inner">
+  <h3>{{ laboratory_type_count }}</h3>
+  <p>Laboratory Type</p>
+  </div>
+  <div class="icon">
+  <i ><img src="{{ url_for('static', filename='uploads/user-doctor-solid.svg')}}" alt="User image" style="width: 40px; height: 40px; border-radius: 50%;"></i>
+  </div>
+  <a href="{{ url_for('detail_laboratory_type') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+  </div>
+
+  <div class="col-lg-3 col-6">
+
+  <div class="small-box bg-blue">
+  <div class="inner">
+  <h3>{{ medicine_count }}</h3>
+  <p>Medicine</p>
+  </div>
+  <div class="icon">
+  <i ><img src="{{ url_for('static', filename='uploads/pen-solid.svg')}}" alt="User image" style="width: 40px; height: 40px; border-radius: 50%;"></i>
+  </div>
+  <a href="{{ url_for('detail_medicine') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+  </div>
+
+  <div class="col-lg-3 col-6">
+
+  <div class="small-box bg-orange">
+  <div class="inner">
+  <h3>{{ laboratory_test }}</h3>
+  <p>Laboratory Test</p>
+  </div>
+  <div class="icon">
+  <i ><img src="{{ url_for('static', filename='uploads/flask-vial-solid.svg')}}" alt="User image" style="width: 40px; height: 40px; border-radius: 50%;"></i>
+  </div>
+  <a href="{{ url_for('detail_laboratory_test') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+  </div>
+
+  <div class="col-lg-3 col-6">
+
+  <div class="small-box bg-danger">
+  <div class="inner">
+  <h3>{{ medication_report }}</h3>
+  <p>Ordered Medicine</p>
+  </div>
+  <div class="icon">
+  <i ><img src="{{ url_for('static', filename='uploads/notes-medical-solid.svg')}}" alt="User image" style="width: 40px; height: 40px; border-radius: 50%;"></i>
+  </div>
+  <a href="{{ url_for('detail_orderd_medicin') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+  </div>
+  </div>
+
+  </div>
+
+{% endblock %}

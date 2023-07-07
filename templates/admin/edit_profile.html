@@ -1,0 +1,136 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<body class="hold-transition sidebar-mini">
+<form method="POST" enctype="multipart/form-data">
+<div class="wrapper">
+<section class="content-header">
+<div class="container-fluid">
+<div class="row mb-2">
+<div class="col-sm-6">
+<h1>Edit Profie<h1>
+
+
+</h1>
+</div>
+</div>
+</div>
+</section>
+
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+
+<div class="col-md-6">
+
+<div class="card card-primary">
+<div class="card-header">
+
+</div>
+
+
+<div>
+<div class="card-body">
+<div class="form-group">
+  <label for="name" class="form-label">First Name</label>
+  <input type="text" class="form-control" id="first_name" name="first_name" value="{{name.first_name}}"required pattern="[a-zA-Z]+">
+</div>
+<div class="form-group">
+  <label for="name" class="form-label">Last Name</label>
+  <input type="text" class="form-control" id="second_name" name="second_name" value="{{name.second_name}}" required pattern="[a-zA-Z]+">
+</div>
+<div class="form-group">
+  <label for="email" class="form-label">Email address</label>
+  <input class="form-control" type="email" id="email" name="email" value="{{name.email}}" required>
+</div>
+
+<div class="form-group">
+  <label for="phone" class="form-label">Phone</label>
+  <input class="form-control" type="number" id="phone" name="phone" value="{{name.phone}}"required>
+</div>
+</div>
+
+<div class="card-footer">
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+<div class="col-md-6">
+
+  <div class="card card-primary">
+  <div class="card-header">
+
+  </div>
+
+
+  <div>
+  <div class="card-body">
+
+  <div class="form-group">
+    <label for="name" class="form-label">City</label>
+    <input type="text" class="form-control" id="city" name="city" value="{{name.city}}" required>
+  </div>
+  <div class="form-group">
+    <label for="name" class="form-label">State</label>
+    <input type="text" class="form-control" id="state" name="state" value="{{name.state}}">
+  </div>
+  <div class="form-group">
+    <label for="type" class="form-label">Gender</label>
+    <select id="gender" name="gender" required>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="date_of_birth" class="form-label">Date of Birth</label>
+    <div class="input-group">
+      <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" data-target="#datepicker" value="{{name.date_of_birth}}" required />
+      <button class="btn btn-outline-secondary" type="button" id="datepicker" data-bs-toggle="datepicker"><i class="bi bi-calendar"></i></button>
+    </div>
+    </div>
+
+
+  </div>
+
+
+  </div>
+
+  </div>
+
+<button type="submit" class="btn btn-primary">Edit</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+
+
+
+
+
+</div>
+
+</form>
+</body>
+{% endblock %}

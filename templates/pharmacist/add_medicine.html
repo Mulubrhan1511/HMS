@@ -1,12 +1,12 @@
 {% extends 'pharmacist/base.html' %}
 
 {% block content %}
- 
+
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-3">
         <div class="container">
-          <h2 class="text-primary mb-4">Other</h2>
+
 
         </div>
       </div>
@@ -15,18 +15,18 @@
         <form method="POST">
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Name</label>
-              <input type="text" class="form-control" id="name" name="name">
-              
+              <input type="text" class="form-control" id="name" name="name" required pattern="[a-zA-Z]+">
+
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Price</label>
-                <input type="number" class="form-control" id="price" name="price">
-                
+                <input type="number" class="form-control" id="price" name="price" required>
+
               </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Total</label>
                 <input type="number" class="form-control" id="total" name="total">
-                
+
               </div>
               <div class="mb-3">
                 <label for="date_of_birth" class="form-label">Expired Date</label>
@@ -35,7 +35,7 @@
                   <button class="btn btn-outline-secondary" type="button" id="datepicker" data-bs-toggle="datepicker"><i class="bi bi-calendar"></i></button>
                 </div>
               </div>
-              
+
               <script>
                 var datepickerTrigger = document.querySelectorAll('[data-bs-toggle="datepicker"]');
                 for (var i = 0; i < datepickerTrigger.length; ++i) {
@@ -52,5 +52,5 @@
       </div>
     </div>
   </div>
-  
+
 {% endblock %}

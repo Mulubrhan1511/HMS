@@ -2,9 +2,140 @@
 
 {% block content %}
 
-{% for patient in patient %}
+<h1 class="text-center">Reception</h1>
 
-  
-  <h1 style="background-color: rgb(244, 245, 244); color: blue;">Detail of  {{ patient.first_name }} {{patient.email}} {{patient.gender}}</h1>
-  {% endfor %}
+<body class="hold-transition sidebar-mini">
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('assign_doctor', patient_id=patient.id) }}">
+<div class="wrapper">
+<section class="content-header">
+<div class="container-fluid">
+<div class="row mb-2">
+<div class="col-sm-6">
+<h1>Detail of {{patient.first_name}} {{patient.second_name}}<h1>
+
+
+</h1>
+</div>
+</div>
+</div>
+</section>
+
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+
+<div class="col-md-6">
+
+<div class="card card-primary">
+<div class="card-header">
+
+</div>
+
+
+<div>
+<div class="card-body">
+<div class="form-group">
+  <label for="name" class="form-label">First Name</label>
+  <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{patient.first_name}}" disabled>
+</div>
+<div class="form-group">
+  <label for="name" class="form-label">Last Name</label>
+  <input type="text" class="form-control" id="second_name" name="second_name" placeholder="{{patient.second_name}}" disabled>
+</div>
+<div class="form-group">
+  <label for="email" class="form-label">Email address</label>
+  <input class="form-control" type="email" id="email" name="email" placeholder="{{patient.email}}" disabled>
+</div>
+<div class="form-group">
+  <label for="phone" class="form-label">Phone</label>
+  <input class="form-control" type="number" id="phone" name="phone" placeholder="{{patient.phone}}" disabled>
+</div>
+
+</div>
+
+<div class="card-footer">
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+<div class="col-md-6">
+
+  <div class="card card-primary">
+  <div class="card-header">
+
+  </div>
+
+
+  <div>
+  <div class="card-body">
+
+  <div class="form-group">
+    <label for="name" class="form-label">City</label>
+    <input type="text" class="form-control" id="city" name="city" placeholder="{{patient.city}}" disabled>
+  </div>
+  <div class="form-group">
+    <label for="name" class="form-label">State</label>
+    <input type="text" class="form-control" id="state" name="state" placeholder="{{patient.state}}" disabled>
+  </div>
+  <div class="form-group">
+    <label for="name" class="form-label">Gender</label>
+    <input type="text" class="form-control" id="gender" name="gender" placeholder="{{patient.gender}}" disabled>
+  </div>
+
+  <div class="form-group">
+    <label for="date_of_birth" class="form-label">Date of Birth</label>
+    <input type="text" class="form-control" id="date_of_birth" name="date_of_birth" placeholder="{{patient.  date_of_birth}}" disabled>
+    </div>
+<div class="form-group">
+  <label for="doctor" class="form-label">Available Doctor</label>
+  <select id="doctor" name="doctor" required>
+    {% for doctor in doctors %}
+    <option value="{{ doctor.id }}">{{ doctor.first_name }}</option>
+    {% endfor %}
+  </select>
+  </div>
+<button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+
+
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+
+
+
+
+
+</div>
+
+</form>
+</body>
+
 {% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-6">
+<div class="card" style="width: 900px">
+<div class="card-header">
+<h3 class="card-title text-center"> Laporatory Types</h3>
+</div>
+
+<div class="card-body">
+<table class="table table-bordered">
+<thead style="width: 100px">
+<tr>
+
+<th style="width: 50px">#</th>
+<th>Name</th>
+<th style="width: 50px">Active</th>
+<th>Available</th>
+</tr>
+</thead>
+{% for lab_type in lab_type %}
+<tbody>
+<tr>
+
+
+<td>{{lab_type.id}}</td>
+<td>{{lab_type.name}}</td>
+
+
+<td><span >{{lab_type.price}}</span></td>
+
+
+<td>Yes</td>
+
+</tr>
+
+</tbody>
+{% endfor %}
+</table>
+</div>
+
+</div>
+
+
+{% endblock %}

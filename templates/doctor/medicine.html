@@ -1,186 +1,221 @@
 {% extends 'doctor/base.html' %}
 
 {% block content %}
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12">
+<div class="card" style="background-color: #e3ede8;">
+<div class="card-header" style="color: white; background-color: #6778ff;">
+<h3 class="card-title">Detail {{patient.first_name}} {{patient.second_name}}</h3>
+</div>
+
+<div class="card-body">
+<table class="table table-bordered">
+<thead>
+<tr>
+
+<th style="color: #ffffff; width: 50px; background-color: #7e858a;">Patient Information</th>
+<th style="text-align: center; color: #ffffff; font-weight: bold; background-color: #7e858a;">Medcine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+  <table class="table table-bordered">
+    <tr>
+      <td style="background-color: #a1a6a9;"><a href="{{ url_for('patient_detail', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Report</a></td>
+
+    </tr>
+    <tr>
+      <td style="background-color: #a1a6a9;"><a href="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laboratory</a></td>
+
+    </tr>
+    <tr>
+      <td style="background-color: #a1a6a9;"><a href="{{ url_for('medicine', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
+
+    </tr>
+  </table>
+
+</td>
+
+<td>
+  <div class="col-md-9">
+    <button type="button" class="btn btn-primary" id="new-lab-report-button">Order Medcine</button>
+    <form method="POST" class="col-md-9"  id="lab-test-form" action="{{ url_for('medicine', patient_id=patient.id) }}" id="lab-test-form" style="display: none;">
+        <fieldset>
 
 
-<div class="container">
-    <legend class="text-center">Select Laboratory Tests</legend>
-    
+            <div style="position: relative;">
+                <input class="form-control" type="text" id="search-input" placeholder="Search..." style="width: 500px; display: inline-block;">
 
-    
-    <div class="container-fluid">
-      
-    <div class="row">
-      <div class="col-md-2">
-        <div class="text-right">
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <td style="background-color: #3399ff;"><a href="{{ url_for('patient_detail', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Report</a></td>
-              </tr>
-              <tr>
-                <td style="background-color: #3399ff;"><a href="{{ url_for('laboratory_detail_doctor', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Laporatory</a></td>
-              </tr>
-              <tr>
-                <td style="background-color: #3399ff;"><a href="{{ url_for('medicine', patient_id=patient.id) }}" style="color: rgb(3, 3, 3); text-decoration: none;">Medicine</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-9">
-        <button type="button" class="btn btn-primary" id="new-lab-report-button">Order Medcine</button>
-        <form method="POST" class="col-md-9"  id="lab-test-form" action="{{ url_for('medicine', patient_id=patient.id) }}" id="lab-test-form" style="display: none;">
-            <fieldset>
-              
-            
-                <div style="position: relative;">
-                    <input class="form-control" type="text" id="search-input" placeholder="Search..." style="width: 500px; display: inline-block;">
 
-                    
-                    <div id="search-results" style="position: absolute; top: 100%;"></div>
-                  </div>
-                
-                  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                  <script>
-                    $(document).ready(function() {
-                      $('#search-input').on('input', function() {
-                        var query = $(this).val();
-                        if (query.length >= 3) {
-                          $.ajax({
-                            url: '/search_medicine', // Replace with the URL of your Flask endpoint
-                            method: 'POST',
-                            data: {query: query},
-                            dataType: 'json',
-                            success: function(response) {
-                              var results = '';
-                              $.each(response, function(index, item) {
-                                results += '<div class="search-result" style="background-color: rgb(244, 245, 244); color: blue; width: 500px;">'+ item.id + ' ' + item.name + ' ' + item.price + ' ' + item.total +'</div>';
-                              });
-                              $('#search-results').html(results);
-                            }
+                <div id="search-results" style="position: absolute; top: 100%;"></div>
+              </div>
+
+              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+              <script>
+                $(document).ready(function() {
+                  $('#search-input').on('input', function() {
+                    var query = $(this).val();
+                    if (query.length >= 3) {
+                      $.ajax({
+                        url: '/search_medicine', // Replace with the URL of your Flask endpoint
+                        method: 'POST',
+                        data: {query: query},
+                        dataType: 'json',
+                        success: function(response) {
+                          var results = '';
+                          $.each(response, function(index, item) {
+                            results += '<div class="search-result" style="background-color: rgb(244, 245, 244); color: blue; width: 500px;">'+ item.id + ' ' + item.name + ' ' + item.price + ' ' + item.total +'</div>';
                           });
-                        } else {
-                          $('#search-results').html('');
+                          $('#search-results').html(results);
                         }
                       });
-                  
-                      $('#search-results').on('click', '.search-result', function() {
-                        var query = $(this).text();
-                        $('#search-input').val(query);
-                        $('#search-results').html('');
-                  
-                        // Extract the name, price, and total from the selected item
-                        var parts = query.split(' ');
-                        var id = parts[0];
-                        var name = parts[1];
-                        var price = parts[2];
-                        var total = parts[3];
-                        
-                  
-                        // Check if the medicine already exists in the table
-                        var existingRow = $('tr').filter(function() {
-                          return $(this).find('.medicine-name').text() === name &&
-                                 $(this).find('.medicine-price').text() === price &&
-                                 $(this).find('.medicine-total').text() === total &&
-                                 $(this).find('.medicine-name').text() === id; 
-                        });
-                  
-                        if (existingRow.length > 0) {
-                          // Update the existing row if it already exists
-                          var quantity = parseInt(existingRow.find('.medicine-quantity').text()) + 1;
-                          existingRow.find('.medicine-quantity').text(quantity);
-                        } else {
-                          // Create a new row in the table for the selected item
-                          var newRow = '<tr>' +
-  '<td class="medicine-id">' +
-    '<input type="hidden" name="medicine_id[]" value="' + id + '">' +
-    id +
-  '</td>' +
-  '<td class="medicine-name">' +
-    '<input type="hidden" name="medicine_name[]" value="' + name + '">' +
-    name +
-  '</td>' +
-  '<td class="medicine-price">' +
-    '<input type="hidden" name="medicine_price[]" value="' + price + '">' +
-    price +
-  '</td>' +
-  '<td class="medicine-total">' +
-    '<input type="hidden" name="medicine_total[]" value="' + total + '">' +
-    total +
-  '</td>' +
-  '<td class="medicine-quantity">' +
-    '<input type="number" class="form-control" id="' + id + '" name="medicine_quantity[]" style="width: 60px;">' +
-  '</td>' +
+                    } else {
+                      $('#search-results').html('');
+                    }
+                  });
+
+                  $('#search-results').on('click', '.search-result', function() {
+                    var query = $(this).text();
+                    $('#search-input').val(query);
+                    $('#search-results').html('');
+
+                    // Extract the name, price, and total from the selected item
+                    var parts = query.split(' ');
+                    var id = parts[0];
+                    var name = parts[1];
+                    var price = parts[2];
+                    var total = parts[3];
+
+
+                    // Check if the medicine already exists in the table
+                    var existingRow = $('tr').filter(function() {
+                      return $(this).find('.medicine-name').text() === name &&
+                             $(this).find('.medicine-price').text() === price &&
+                             $(this).find('.medicine-total').text() === total &&
+                             $(this).find('.medicine-name').text() === id;
+                    });
+
+                    if (existingRow.length > 0) {
+                      // Update the existing row if it already exists
+                      var quantity = parseInt(existingRow.find('.medicine-quantity').text()) + 1;
+                      existingRow.find('.medicine-quantity').text(quantity);
+                    } else {
+                      // Create a new row in the table for the selected item
+                      var newRow = '<tr>' +
+'<td class="medicine-id">' +
+'<input type="hidden" name="medicine_id[]" value="' + id + '">' +
+id +
+'</td>' +
+'<td class="medicine-name">' +
+'<input type="hidden" name="medicine_name[]" value="' + name + '">' +
+name +
+'</td>' +
+'<td class="medicine-price">' +
+'<input type="hidden" name="medicine_price[]" value="' + price + '">' +
+price +
+'</td>' +
+'<td class="medicine-total">' +
+'<input type="hidden" name="medicine_total[]" value="' + total + '">' +
+total +
+'</td>' +
+'<td class="medicine-quantity">' +
+'<input type="number" class="form-control" id="' + id + '" name="medicine_quantity[]" style="width: 60px;">' +
+'</td>' +
 '</tr>';
 
 $('#medicine-table').append(newRow);  // Append the new row to the table
-                        }
-                      });
-                    });
-                  </script>
-                  
-                  <table class="table table-striped mb-0" id="medicine-table">
-                    <thead style="background-color: #98FB98;">
-                      <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>Quantity</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
-                  <button>Send</button>
-        </fieldset> 
+                    }
+                  });
+                });
+              </script>
+
+              <div class="col-md-6">
+
+
+
+              <div class="card-body">
+              <table class="table table-bordered" id="medicine-table" style="background-color: #ffffff;">
+              <thead>
+              <tr>
+              <th style="width: 10px">#</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th style="width: 40px">Total</th>
+              <th style="width: 40px">Quantity</th>
+
+              </tr>
+              </thead>
+              <tbody>
+
+
+
+
+              </tbody>
+              </table>
+              </div>
+
+              </div>
+
+              <button style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 5px;">Send</button>
+    </fieldset>
+    </form>
+    {% if report %}
+    <ul class="list-group">
+      {% for report in report %}
+      {% if report.test == 0 %}
+      <li class="list-group-item list-group-item-action list-group-item-primary">
+        {{ report.date }}
+        <h9 style="float: right;">Pending</h9>
+    </li>
+      <li class="list-group-item">
+        <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}} </pre></div>
+        <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
+          <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
+          <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+          <input type="hidden" name="report_id" value="{{ report.id }}">
         </form>
-        {% if report %}
-        <ul class="list-group">
-          {% for report in report %}
-          {% if report.test == 0 %}
-          <li class="list-group-item list-group-item-action list-group-item-primary">
-            {{ report.date }}
-            <h9 style="float: right;">Pending</h9>
-        </li>
-          <li class="list-group-item">
-            <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}} </pre></div>
-            <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
-              <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
-              <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
-              <input type="hidden" name="report_id" value="{{ report.id }}">
-            </form>
-          
-          </li>
-          {% else %}
-          <li class="list-group-item list-group-item-action list-group-item-primary">
-            {{ report.date }}
-            <h9 style="float: right;">Done</h9> 
-          </li>
-          <li class="list-group-item">
-            <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}}</pre></div>
-            <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
-              <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
-              <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
-              <input type="hidden" name="report_id" value="{{ report.id }}">
-            </form>
-          
-          </li>
-          {% endif %}
-  
-          {% endfor %}
-        </ul>
-        {% else %}
-        <p>There was no medicine reports found.</p>
-        {% endif %}
-        </div>
 
+      </li>
+      {% else %}
+      <li class="list-group-item list-group-item-action list-group-item-primary">
+        {{ report.date }}
+        <h9 style="float: right;">Done</h9>
+      </li>
+      <li class="list-group-item">
+        <div class="report-data" data-report-id="{{ report.id }}"><pre>{{ report.data}}</pre></div>
+        <form class="edit-report-form d-none" data-report-id="{{ report.id }}">
+          <textarea class="form-control" rows="6" cols="80" name="report_data">{{ report.data }}</textarea>
+          <button type="submit" class="btn btn-primary btn-sm mt-2">Submit</button>
+          <input type="hidden" name="report_id" value="{{ report.id }}">
+        </form>
+
+      </li>
+      {% endif %}
+
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>There was no medicine reports found.</p>
+    {% endif %}
     </div>
-     
+
+</td>
+
+</tr>
+
+</tbody>
+</table>
 </div>
 
+
 </div>
+</div>
+</div>
+</div>
+</section>
 <script>
   $(document).ready(function() {
     $('#new-lab-report-button').click(function() {
@@ -190,4 +225,5 @@ $('#medicine-table').append(newRow);  // Append the new row to the table
     });
   });
   </script>
+
 {% endblock %}

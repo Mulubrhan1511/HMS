@@ -1,0 +1,50 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-6">
+<div class="card" style="width: 900px">
+<div class="card-header">
+<h3 class="card-title text-center"> Laporatory Types</h3>
+</div>
+
+<div class="card-body">
+<table class="table table-bordered">
+<thead style="width: 100px">
+<tr>
+
+<th style="width: 50px">#</th>
+<th>Patient ID</th>
+
+<th>Paid</th>
+<th>Date</th>
+<th style="width: 50px">Price</th>
+</tr>
+</thead>
+{% for medication_report in medication_report %}
+<tbody>
+<tr>
+
+
+<td>{{medication_report.id}}</td>
+<td>{{medication_report.patient_id}}</td>
+
+
+
+{% if medication_report.paid == 1 %}
+<td><span><span class="badge bg-success">Yes</span></span></td>
+{% else %}
+<td><span><span class="badge bg-danger">No</span></span></td>
+{% endif %}
+<td>{{ medication_report.date }}</td>
+<td>{{medication_report.price}}</td>
+</tr>
+
+</tbody>
+{% endfor %}
+</table>
+</div>
+
+</div>
+{% endblock %}

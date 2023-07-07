@@ -1,0 +1,49 @@
+{% extends 'laboratory/base.html' %}
+{% block content %}
+<br>
+<br>
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12" style="width: 900px; margin: 0 auto;">
+<div class="card" style="width: 900px">
+<div class="card-header">
+<h3 class="card-title text-center"> </h3>
+</div>
+
+<div class="card-body">
+<table class="table table-bordered">
+<thead style="width: 100px">
+<tr>
+<th style="width: 50px">#</th>
+<th>Name</th>
+<th style="width: 50px">Active</th>
+<th style="width: 50px">Edit</th>
+</tr>
+</thead>
+{% for laboratory_type in laboratory_type %}
+<tbody>
+<tr>
+
+
+  <td>{{laboratory_type.id}}</td>
+  <td>{{laboratory_type.name}}</td>
+  <td>
+    {% if laboratory_type.active %}
+    Active
+    {% else%}
+    InActive
+    {% endif %}
+
+  </td>
+  <td><a href="{{ url_for('edit_lab_type', laboratory_type_id=laboratory_type.id) }}">Edit</a></td>
+</tr>
+
+</tbody>
+{% endfor %}
+</table>
+</div>
+
+</div>
+
+{% endblock %}
