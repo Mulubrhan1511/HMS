@@ -6,6 +6,7 @@ from flask_login import login_user, login_required, logout_user, current_user, L
 from datetime import date, datetime, timedelta
 from flask_socketio import SocketIO, emit
 from werkzeug.utils import secure_filename
+from sqlalchemy import and_
 
 
 login_manager = LoginManager(app)
@@ -447,7 +448,8 @@ def appointment_doctor():
     name = current_user if current_user.is_authenticated else ''
     # Use the patient ID to look up the patient's details
     patient = Patient.query.filter().all()
-    appointments = Appointment.query.filter(Appointment.doctor_id == name.id).all()
+    today = date.today()
+    appointments = Appointment.query.filter(and_(Appointment.doctor_id == name.id, Appointment.date == today)).all()
     return render_template('doctor/appoitment.html',appointments=appointments,name=name,patient=patient)
 @app.route('/medicine/<int:patient_id>', methods=['GET', 'POST'])
 @login_required
@@ -953,6 +955,22 @@ def edit_profile_reception(user_id):
         db.session.commit()
         return redirect(url_for('reception_dashboard'))
     return render_template('reception/edit_profile.html',name=name)
+@app.route('/update_patient_doctor_id/<int:patient_id>')
+def update_patient_doctor_id(patient_id):
+
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+    name = current_user if current_user.is_authenticated else ''
+    patient = Patient.query.get(patient_id)
+    appointment = Appointment.query.filter_by(patient_id=patient_id).first()
+    if appointment:
+        db.session.delete(appointment)
+        db.session.commit()
+    patient.doctor_id = None
+    db.session.commit()
+    session['patient_id'] = None
+    return redirect(url_for('doctor_dashboard',name=name))
 @app.before_request
 def before_request():
     g.messages = get_flashed_messages()
