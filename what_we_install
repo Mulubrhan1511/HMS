@@ -1,0 +1,8 @@
+pip install flask
+pip install flask_sqlalchemy
+pip install flask_login
+pip install flask_socketio
+sudo apt-get install pkg-config
+sudo apt-get install libmysqlclient-dev
+pip3 install mysqlclient
+pip3 install eventlet
